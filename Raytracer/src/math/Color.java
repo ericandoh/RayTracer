@@ -3,6 +3,7 @@ package math;
 public class Color {
 	
 	public static final Color WHITE = new Color(1.0f, 1.0f, 1.0f);
+	public static final Color BLACK = new Color(0.0f, 0.0f, 0.0f);
 	
 	public float r, g, b;
 	
@@ -34,5 +35,9 @@ public class Color {
 		this.g += (a.g * b.g) * c;
 		this.b += (a.b * b.b) * c;
 		return this;
+	}
+	@Override
+	public String toString() {
+		return "(" + this.r + "," + this.g + "," + this.b + ")";
 	}
 }

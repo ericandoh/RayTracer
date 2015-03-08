@@ -10,4 +10,10 @@ public class Ray {
 		tmin = 0f;
 		tmax = Float.POSITIVE_INFINITY;
 	}
+	public Ray(Point p, Vector3 dir) {
+		this.point = p;
+		this.direction = dir;
+		tmin = 0.0f;
+		tmax = Float.POSITIVE_INFINITY;
+	}
 }

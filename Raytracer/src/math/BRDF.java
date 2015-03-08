@@ -1,6 +1,7 @@
 package math;
 
 import raytracer.Light;
+import raytracer.PointLight;
 
 public class BRDF {
 	public Color ka;
@@ -34,13 +35,63 @@ public class BRDF {
 		//handle kd
 		//norm(l)*norm(n)
 		float ln = Vector3.normProd(lightRay.direction, intersection.normal);
+		ln = Math.max(0.0f, ln);
 		src.addProductScale(kd, light.color, ln);
 		//handle ks
 		intersection.normal.scale(rm, 
 				Vector3.normProd(lightRay.direction, intersection.normal) * 2.0f);
 		rm.subtract(rm, lightRay.direction);
 		float rv = Vector3.normProd(rm, viewRay.direction);
+		rv = Math.max(0.0f, rv);
 		rv = (float)Math.pow(rv, ksp);
 		src.addProductScale(ks, light.color, rv);
+	}
+	
+	public static void main(String[] args) {
+		//testing Phong Shading calculations...
+		
+		Color red = new Color(1.0f, 0.0f, 0.0f);
+		
+		Color result = new Color();
+		Intersection inter = new Intersection();
+		//normal straight up
+		inter.normal = new Vector3(0.0f, 1.0f, 0.0f);
+		//only the light color used here
+		Light light = new PointLight(new Vector3(1.0f, 1.0f, 1.0f), Color.WHITE);
+		//light ray is from surface => light
+		//light ray straight up in y direction
+		Ray lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+		//view ray from surface => viewpoint
+		Ray viewRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+		
+		//----------AMBIENT TEST----------------
+		BRDF model = new BRDF(red, Color.BLACK, Color.BLACK, 1.0f, Color.BLACK);
+		result.setBlack();
+		model.addShading(result, inter, light, lightRay, viewRay);
+		System.out.println("Pure Ambient: " + result);
+		//----------DIFFUSE TEST----------------
+		//red light straight up
+		model = new BRDF(Color.BLACK, red, Color.BLACK, 1.0f, Color.BLACK);
+		result.setBlack();
+		model.addShading(result, inter, light, lightRay, viewRay);
+		System.out.println("Diffuse, Straight: " + result);
+		//red light shined at an angle
+		lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f));
+		result.setBlack();
+		model.addShading(result, inter, light, lightRay, viewRay);
+		System.out.println("Diffuse, Tilted Light: " + result);
+		//red light shined at a sharper angle
+		lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(8.0f, 1.0f, 0.0f));
+		result.setBlack();
+		model.addShading(result, inter, light, lightRay, viewRay);
+		System.out.println("Diffuse, Tilted Light Extreme: " + result);
+		//colored light on colored object
+		light = new PointLight(new Vector3(1.0f, 1.0f, 1.0f), new Color(0.5f, 0.4f, 0.3f));
+		lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f));
+		model = new BRDF(new Color(0.5f, 0.6f, 0.7f), Color.BLACK, Color.BLACK, 1.0f, Color.BLACK);
+		result.setBlack();
+		model.addShading(result, inter, light, lightRay, viewRay);
+		System.out.println("Diffuse, Tilted Colored on Colored: " + result);
+		
 	}
 }
