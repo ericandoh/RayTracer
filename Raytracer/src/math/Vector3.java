@@ -21,4 +21,25 @@ public class Vector3 {
 			z = (float) Math.random();
 		}
 	}
+	
+	public Vector3 scale(Vector3 src, float scale) {
+		src.x = this.x * scale;
+		src.y = this.y * scale;
+		src.z = this.z * scale;
+		return src;
+	}
+	
+	public Vector3 add(Vector3 src, Vector3 second) {
+		src.x = x + second.x;
+		src.y = y + second.y;
+		src.z = z + second.z;
+		return src;
+	}
+	
+	public Vector3 subtract(Vector3 src, Vector3 second) {
+		src.x = this.x - second.x;
+		src.y = this.y - second.y;
+		src.z = this.z - second.z;
+		return src;
+	}
 }
