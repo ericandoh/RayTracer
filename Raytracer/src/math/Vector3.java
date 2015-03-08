@@ -49,7 +49,49 @@ public class Vector3 {
 		this.z = other.z;
 	}
 	
+	public void set(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Vector3) {
+			return this.x == ((Vector3)obj).x 
+					&& this.y == ((Vector3)obj).y 
+					&& this.z == ((Vector3)obj).z;
+		}
+		return super.equals(obj);
+	}
+	@Override
+	public String toString() {
+		return "(" + Float.toString(this.x) + "," + Float.toString(this.y) + "," + Float.toString(this.z) + ")";
+	}
+	
 	public static float normProd(Vector3 a, Vector3 b) {
-		return 0.0f;
+		float normA = (float) Math.sqrt(Math.pow(a.x, 2) + Math.pow(a.y, 2) + Math.pow(a.z, 2));
+		float normB = (float) Math.sqrt(Math.pow(b.x, 2) + Math.pow(b.y, 2) + Math.pow(b.z, 2));
+		
+		return (a.x*b.x + a.y*b.y + a.z*b.z) / (normA * normB);
+	}
+	public static void main(String[] args) {
+		Vector3 a = new Vector3(1, 2, 3);
+		Vector3 b = new Vector3(4, 5, 6);
+		Vector3 temp = new Vector3();
+		
+		temp.set(1, 2, 3);
+		System.out.println(a + " ?= " + temp + ": " + a.equals(temp));
+		System.out.println(b + " ?= " + temp + ": " + b.equals(temp));
+		a.add(temp, b);
+		System.out.println(a + " + " + b + " = " + temp);
+		a.subtract(temp, b);
+		System.out.println(a + " - " + b + " = " + temp);
+		a.scale(temp, 2.0f);
+		System.out.println(a + " * 2.0 = " + temp);
+		System.out.println(a + "^ . " + b + "^ = " + Vector3.normProd(a, b));
+		System.out.println("Wolfram Alpha says above is 0.97463184...");
+		
+		a.scale(temp, 2.0f);
 	}
 }

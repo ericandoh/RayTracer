@@ -39,12 +39,11 @@ public class Raytracer {
 			light.generateLightRay(lightRay, c, inter.intersection);
 			
 			//see if light is blocked from light=>this point
-			world.getIntersectingObject(isBlocked, ray);
+			world.getIntersectingObject(isBlocked, lightRay);
 			if (!isBlocked.intersects) {
 				//not blocked, so do shading calculations for this light ray
-				hit.addShading(src, inter, light);
+				hit.addShading(src, inter, light, lightRay, ray);
 			}
-			
 		}
 		
 		

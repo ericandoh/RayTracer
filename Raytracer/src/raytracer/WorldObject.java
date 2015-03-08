@@ -29,7 +29,7 @@ public class WorldObject {
 		return src;
 	}
 	
-	public void addShading(Color src, Intersection intersection, Light light) {
-		brdf.addShading(src, intersection, light);
+	public void addShading(Color src, Intersection intersection, Light light, Ray lightRay, Ray viewRay) {
+		brdf.addShading(src, intersection, light, lightRay, viewRay);
 	}
 }
