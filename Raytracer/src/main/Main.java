@@ -13,10 +13,20 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		//read in args here
+		
+		//width, height
 		int width = 800;
 		int height = 600;
 		
-		Scene scene = new Scene(width, height);
+		//make a scene
+		Scene scene = new Scene();
+		
+		//give scene some objects
+		scene.defaultScene();
+		
+		//tell scene to paint itself
+		scene.paintScene(width, height);
 		
 		BufferedImage canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		scene.fillImage(canvas);
