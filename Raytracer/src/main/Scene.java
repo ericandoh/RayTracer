@@ -61,7 +61,8 @@ public class Scene {
 	public void repaintScene() {
 		//all the magic happens here
 		for (int x = 0; x < screenColors.length; x++) {
-			for (int y = 0; y < screenColors[0].length; y++) {	
+			for (int y = 0; y < screenColors[0].length; y++) {
+				screenColors[x][y].setBlack();
 				paintAtPixel(screenColors[x][y], (float)(x) / width, (float)(y) / height);
 			}
 		}
@@ -77,7 +78,7 @@ public class Scene {
 	public void fillImage(BufferedImage img) {
 		for (int x = 0; x < screenColors.length; x++) {
 			for (int y = 0; y < screenColors[0].length; y++) {
-				img.setRGB(x, y, new java.awt.Color(screenColors[x][y].x, screenColors[x][y].y, screenColors[x][y].z).getRGB());
+				img.setRGB(x, y, new java.awt.Color(screenColors[x][y].r, screenColors[x][y].g, screenColors[x][y].b).getRGB());
 			}
 		}
 	}

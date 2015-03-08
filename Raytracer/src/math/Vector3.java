@@ -42,4 +42,14 @@ public class Vector3 {
 		src.z = this.z - second.z;
 		return src;
 	}
+	
+	public void set(Vector3 other) {
+		this.x = other.x;
+		this.y = other.y;
+		this.z = other.z;
+	}
+	
+	public static float normProd(Vector3 a, Vector3 b) {
+		return 0.0f;
+	}
 }

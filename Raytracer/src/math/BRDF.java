@@ -1,5 +1,7 @@
 package math;
 
+import raytracer.Light;
+
 public class BRDF {
 	public Color ka;
 	public Color kd;
@@ -16,5 +18,14 @@ public class BRDF {
 		this.kd = kd;
 		this.ks = ks;
 		this.kr = kr;
+	}
+	//phong shading algorithm goes here
+	public void addShading(Color src, Intersection intersection, Light light) {
+		//handle ka
+		src.addProduct(ka, light.color);
+		//handle kd
+		//norm(l)*norm(n)
+		
+		//handle ks
 	}
 }

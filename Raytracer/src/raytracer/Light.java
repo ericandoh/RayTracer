@@ -6,7 +6,7 @@ import math.Ray;
 
 public class Light {
 	
-	protected Color color;
+	public Color color;
 	
 	public Light(Color color) {
 		this.color = color;

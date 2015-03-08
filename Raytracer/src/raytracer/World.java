@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import math.Color;
 import math.Ellipsoid;
+import math.Intersection;
 import math.Ray;
 import math.Shape;
 import math.Vector3;
@@ -15,6 +16,9 @@ import math.Vector3;
 public class World {
 	private ArrayList<WorldObject> shapes;
 	private ArrayList<Light> lights;
+	
+	private Intersection temp0 = new Intersection();
+	private Intersection temp1 = new Intersection();
 	
 	public World() {
 		shapes = new ArrayList<WorldObject>();
@@ -32,19 +36,23 @@ public class World {
 		this.addLight(new PointLight(new Vector3(5, 5, 5), Color.WHITE));
 	}
 	
-	public WorldObject getIntersectingObject(Ray eye) {
+	public WorldObject getIntersectingObject(Intersection src, Ray eye) {
 		
 		float minDst = Float.MAX_VALUE;
 		float dst = 0.0f;
 		WorldObject minShape = null;
+		temp1.invalidate();
 		
 		for (WorldObject shp: shapes) {
-			//dst = shp.getDst(eye)
-			if (dst < minDst && dst >= 0) {
+			shp.getIntersection(temp0, eye);
+			dst = temp0.getT();
+			if (temp0.intersects && dst < minDst && dst >= 0) {
 				minDst = dst;
 				minShape = shp;
+				temp1.set(temp0);
 			}
 		}
+		src.set(temp1);
 		return minShape;
 	}
 	//used by raytracer
