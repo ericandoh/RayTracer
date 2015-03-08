@@ -43,6 +43,14 @@ public class Vector3 {
 		return src;
 	}
 	
+	public Vector3 normalize(Vector3 src) {
+		float mag = magnitude();
+		src.x = this.x / mag;
+		src.y = this.y / mag;
+		src.z = this.z / mag;
+		return src;
+	}
+	
 	public void set(Vector3 other) {
 		this.x = other.x;
 		this.y = other.y;
@@ -55,6 +63,10 @@ public class Vector3 {
 		this.z = z;
 	}
 	
+	public float magnitude() {
+		return (float) Math.sqrt(x * x + y * y + z * z);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Vector3) {
@@ -64,17 +76,18 @@ public class Vector3 {
 		}
 		return super.equals(obj);
 	}
+	
 	@Override
 	public String toString() {
 		return "(" + Float.toString(this.x) + "," + Float.toString(this.y) + "," + Float.toString(this.z) + ")";
 	}
 	
 	public static float normProd(Vector3 a, Vector3 b) {
-		float normA = (float) Math.sqrt(Math.pow(a.x, 2) + Math.pow(a.y, 2) + Math.pow(a.z, 2));
-		float normB = (float) Math.sqrt(Math.pow(b.x, 2) + Math.pow(b.y, 2) + Math.pow(b.z, 2));
-		
+		float normA = a.magnitude();
+		float normB = b.magnitude();		
 		return (a.x*b.x + a.y*b.y + a.z*b.z) / (normA * normB);
 	}
+	
 	public static void main(String[] args) {
 		Vector3 a = new Vector3(1, 2, 3);
 		Vector3 b = new Vector3(4, 5, 6);

@@ -36,6 +36,11 @@ public class Color {
 		this.b += (a.b * b.b) * c;
 		return this;
 	}
+	public void set(Color other) {
+		this.r = other.r;
+		this.g = other.g;
+		this.b = other.b;
+	}
 	@Override
 	public String toString() {
 		return "(" + this.r + "," + this.g + "," + this.b + ")";

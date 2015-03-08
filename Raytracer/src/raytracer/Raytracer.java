@@ -3,6 +3,7 @@ package raytracer;
 import math.Color;
 import math.Intersection;
 import math.Ray;
+import math.Vector3;
 
 public class Raytracer {
 	
@@ -44,6 +45,14 @@ public class Raytracer {
 				//not blocked, so do shading calculations for this light ray
 				hit.addShading(src, inter, light, lightRay, ray);
 			}
+		}
+		if(hit.brdf.kr.r > 0 && hit.brdf.kr.g > 0 && hit.brdf.kr.b > 0) {
+			Ray reflectRay = new Ray();
+			Vector3 norm = new Vector3();
+			inter.normal.normalize(norm); //create a unit normal vector
+			ray.reflect(reflectRay, norm, inter.intersection);
+			trace(src, reflectRay, depth + 1);
+			src.addProduct(src, hit.brdf.kr); // <-- not sure if this is right
 		}
 		
 		
