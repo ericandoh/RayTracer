@@ -54,7 +54,7 @@ public class Scene {
 		//oeijfpdijpd
 		Ray src = new Ray();
 		cam.generateRay(x, y, src);
-		//rayTracer.trace(src, color);
+		//rayTracer.trace(src);
 		return new Vector3(true);
 	}
 	
