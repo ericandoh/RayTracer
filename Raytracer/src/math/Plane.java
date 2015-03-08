@@ -3,10 +3,19 @@ package math;
 public class Plane extends Shape {
 	public Point ul, ll, ur, lr;
 	
-	public Plane(Point ul, Point lr) {
-		
+	public Plane(Point ul, Point ll, Point ur, Point lr) {
+		this.ul = ul;
+		this.ll = ll;
+		this.ur = ur;
+		this.lr = lr;
 	}
-	public Point get(float x, float y) {
+	public Plane() {
+		this.ul = new Point();
+		this.ll = new Point();
+		this.ur = new Point();
+		this.lr = new Point();
+	}
+	public Point interpolate(float x, float y) {
 		Point pt = new Point();
 		Vector3 temp11 = new Vector3();
 		Vector3 temp12 = new Vector3();
