@@ -1,68 +1,78 @@
 package main;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import raytracer.Camera;
 import raytracer.Raytracer;
-import math.Ellipsoid;
+import raytracer.World;
 import math.Ray;
 import math.Shape;
-import math.Vector3;
+import math.Color;
 
 public class Scene {
 	
-	private Vector3 [][] screen;
+	private Color[][] screenColors;
 	
-	private ArrayList<Shape> shapes;
+	private World world;
 	
 	private Camera cam;
 	private Raytracer rayTracer;
 	
+	private int width, height;
+	
+	//temp variables
+	//for multithreading, give each thread its own temp values
+	private Ray tempRay = new Ray();
+	
 	public Scene() {
 		//initializes a scene which can have objects
-		shapes = new ArrayList<Shape>();
-		
 		cam = new Camera();
-		rayTracer = new Raytracer();
+		world = new World();
+		rayTracer = new Raytracer(world);
 	}
 	
 	public void addShape(Shape shape) {
-		shapes.add(shape);
+		world.addShape(shape);
 	}
 	public void defaultScene() {
-		shapes.add(new Ellipsoid());
+		world.defaultScene();
 	}
 	
 	public void paintScene(int width, int height) {
 		
 		//draws on screen
+		this.width = width;
+		this.height = height;
+		screenColors = new Color[width][height];
 		
-		screen = new Vector3[width][height];
+		for (int x = 0; x < screenColors.length; x++) {
+			for (int y = 0; y < screenColors[0].length; y++) {	
+				screenColors[x][y] = new Color();
+			}
+		}
 		
+		repaintScene();
+	}
+	public void repaintScene() {
 		//all the magic happens here
-		
-		for (int x = 0; x < screen.length; x++) {
-			for (int y = 0; y < screen[0].length; y++) {	
-				screen[x][y] = paintAtPixel((float)(x) / width, (float)(y) / height);
+		for (int x = 0; x < screenColors.length; x++) {
+			for (int y = 0; y < screenColors[0].length; y++) {	
+				paintAtPixel(screenColors[x][y], (float)(x) / width, (float)(y) / height);
 			}
 		}
 	}
 	
-	public Vector3 paintAtPixel(float x, float y) {
-		//oeijfpdijpd
-		Ray src = new Ray();
-		cam.generateRay(x, y, src);
-		//rayTracer.trace(src);
-		return new Vector3(true);
+	public Color paintAtPixel(Color src, float x, float y) {
+		//cam.generateRay(tempRay, x, y);
+		rayTracer.trace(src, tempRay, 0);
+		return src;
 	}
 	
 	//just for testing
 	public void fillImage(BufferedImage img) {
-		for (int x = 0; x < screen.length; x++) {
-			for (int y = 0; y < screen[0].length; y++) {
-				img.setRGB(x, y, new Color(screen[x][y].x, screen[x][y].y, screen[x][y].z).getRGB());
+		for (int x = 0; x < screenColors.length; x++) {
+			for (int y = 0; y < screenColors[0].length; y++) {
+				img.setRGB(x, y, new java.awt.Color(screenColors[x][y].x, screenColors[x][y].y, screenColors[x][y].z).getRGB());
 			}
 		}
 	}
