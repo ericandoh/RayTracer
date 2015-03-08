@@ -2,7 +2,6 @@ package raytracer;
 
 import math.Color;
 import math.Ray;
-import math.Shape;
 
 public class Raytracer {
 	
@@ -21,12 +20,14 @@ public class Raytracer {
 			return src;
 		}
 		
-		Shape hit = world.getIntersectingObject(ray);
+		WorldObject hit = world.getIntersectingObject(ray);
 		if (hit == null) {
 			src.setBlack();
 			return src;
 		}
-		
+		for (Light light: world.getLights()) {
+			
+		}
 		
 		
 		return src;

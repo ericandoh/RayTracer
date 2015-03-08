@@ -3,11 +3,13 @@ package main;
 import java.awt.image.BufferedImage;
 
 import raytracer.Camera;
+import raytracer.Light;
 import raytracer.Raytracer;
 import raytracer.World;
 import math.Ray;
 import math.Shape;
 import math.Color;
+import math.Vector3;
 
 public class Scene {
 	
@@ -31,11 +33,14 @@ public class Scene {
 		rayTracer = new Raytracer(world);
 	}
 	
-	public void addShape(Shape shape) {
-		world.addShape(shape);
+	public void addShape(Shape shape, Vector3 pos) {
+		world.addShape(shape, pos);
 	}
 	public void defaultScene() {
 		world.defaultScene();
+	}
+	public void addLight(Light l) {
+		world.addLight(l);
 	}
 	
 	public void paintScene(int width, int height) {
@@ -63,7 +68,7 @@ public class Scene {
 	}
 	
 	public Color paintAtPixel(Color src, float x, float y) {
-		//cam.generateRay(tempRay, x, y);
+		cam.generateRay(tempRay, x, y);
 		rayTracer.trace(src, tempRay, 0);
 		return src;
 	}
