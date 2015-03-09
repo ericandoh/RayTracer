@@ -41,7 +41,7 @@ public class BRDF {
 		intersection.normal.scale(rm, 
 				Vector3.normProd(lightRay.direction, intersection.normal) * 2.0f);
 		rm.subtract(rm, lightRay.direction);
-		float rv = Vector3.normProd(rm, viewRay.direction);
+		float rv = -1.0f * Vector3.normProd(rm, viewRay.direction); //viewRay points from pt to eye, not from eye to pt
 		rv = Math.max(0.0f, rv);
 		rv = (float)Math.pow(rv, ksp);
 		src.addProductScale(ks, light.color, rv);

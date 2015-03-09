@@ -51,8 +51,9 @@ public class Raytracer {
 			Vector3 norm = new Vector3();
 			inter.normal.normalize(norm); //create a unit normal vector
 			ray.reflect(reflectRay, norm, inter.intersection);
-			trace(src, reflectRay, depth + 1);
-			src.addProduct(src, hit.brdf.kr); // <-- not sure if this is right
+			Color ref = new Color();
+			trace(ref, reflectRay, depth + 1);
+			src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
 		}
 		
 		
