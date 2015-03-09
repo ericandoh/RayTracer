@@ -35,11 +35,12 @@ public class World {
 	public void defaultScene() {
 		this.addShape(new Ellipsoid(), BRDF.RED_DIFFUSE);
 		this.addShape(new Ellipsoid(new Point(1, 0.3f, 2)), BRDF.YELLOW_DIFFUSE);
+		this.addShape(new Ellipsoid(new Point(-1, -0.4f, 3)), BRDF.BLUE_DIFFUSE);
 		
 		this.addLight(new PointLight(new Vector3(5, 5, 5), Color.WHITE));
 	}
 	
-	public WorldObject getIntersectingObject(Intersection src, Ray eye) {
+	public WorldObject getIntersectingObject(Intersection src, Ray eye, WorldObject exclude) {
 		
 		float minDst = Float.MAX_VALUE;
 		float dst = 0.0f;
@@ -47,6 +48,8 @@ public class World {
 		temp1.invalidate();
 		
 		for (WorldObject shp: shapes) {
+			if (shp == exclude)
+				continue;
 			shp.getIntersection(temp0, eye);
 			dst = temp0.getT();
 			if (temp0.intersects && dst < minDst && dst >= 0) {

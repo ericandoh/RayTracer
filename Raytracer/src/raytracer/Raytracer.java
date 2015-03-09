@@ -25,7 +25,7 @@ public class Raytracer {
 		}
 		//see which object this ray hits
 		Intersection inter = new Intersection();
-		WorldObject hit = world.getIntersectingObject(inter, ray);
+		WorldObject hit = world.getIntersectingObject(inter, ray, null);
 		if (!inter.intersects) {
 			//no object hit - black space
 			//change color here to sky blue if you want sky blue background
@@ -40,7 +40,7 @@ public class Raytracer {
 			light.generateLightRay(lightRay, c, inter.intersection);
 			
 			//see if light is blocked from light=>this point
-			world.getIntersectingObject(isBlocked, lightRay);
+			world.getIntersectingObject(isBlocked, lightRay, hit);
 			if (!isBlocked.intersects) {
 				//not blocked, so do shading calculations for this light ray
 				hit.addShading(src, inter, light, lightRay, ray);
