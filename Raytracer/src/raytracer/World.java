@@ -6,6 +6,7 @@ import math.BRDF;
 import math.Color;
 import math.Ellipsoid;
 import math.Intersection;
+import math.Point;
 import math.Ray;
 import math.Shape;
 import math.Vector3;
@@ -25,14 +26,15 @@ public class World {
 		shapes = new ArrayList<WorldObject>();
 		lights = new ArrayList<Light>();
 	}
-	public void addShape(Shape shape, Vector3 pos) {
-		shapes.add(new WorldObject(shape, pos, BRDF.YELLOW_DIFFUSE));
+	public void addShape(Shape shape, BRDF bird) {
+		shapes.add(new WorldObject(shape, bird));
 	}
 	public void addLight(Light l) {
 		lights.add(l);
 	}
 	public void defaultScene() {
-		this.addShape(new Ellipsoid(), new Vector3(0, 0, 0));
+		this.addShape(new Ellipsoid(), BRDF.RED_DIFFUSE);
+		this.addShape(new Ellipsoid(new Point(1, 0.3f, 2)), BRDF.YELLOW_DIFFUSE);
 		
 		this.addLight(new PointLight(new Vector3(5, 5, 5), Color.WHITE));
 	}

@@ -15,7 +15,7 @@ public class WorldObject {
 	//private BRDF brdf; <-- BRDF needs to get accessed by raytracer to do recursive reflection calls
 	public BRDF brdf;
 	
-	public WorldObject(Shape shape, Vector3 pos, BRDF brdf) {
+	public WorldObject(Shape shape, BRDF brdf) {
 		this.shape = shape;
 		this.brdf = brdf;
 	}

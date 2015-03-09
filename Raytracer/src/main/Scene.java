@@ -6,6 +6,7 @@ import raytracer.Camera;
 import raytracer.Light;
 import raytracer.Raytracer;
 import raytracer.World;
+import math.BRDF;
 import math.Ray;
 import math.Shape;
 import math.Color;
@@ -33,8 +34,8 @@ public class Scene {
 		rayTracer = new Raytracer(world);
 	}
 	
-	public void addShape(Shape shape, Vector3 pos) {
-		world.addShape(shape, pos);
+	public void addShape(Shape shape, BRDF bird) {
+		world.addShape(shape, bird);
 	}
 	public void defaultScene() {
 		world.defaultScene();
