@@ -15,8 +15,9 @@ public class WorldObject {
 	//private BRDF brdf; <-- BRDF needs to get accessed by raytracer to do recursive reflection calls
 	public BRDF brdf;
 	
-	public WorldObject(Shape shape, Vector3 pos) {
+	public WorldObject(Shape shape, Vector3 pos, BRDF brdf) {
 		this.shape = shape;
+		this.brdf = brdf;
 	}
 	
 	public Intersection getIntersection(Intersection src, Ray eye) {

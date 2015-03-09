@@ -47,7 +47,6 @@ public class Ellipsoid extends Shape {
 		else {
 			ans = sol[0];
 		}
-		System.out.println(ans);
 		eye.getPointAt(src.intersection, ans);
 		src.intersects = true;
 		src.intersection.subtract(src.normal, this.center);

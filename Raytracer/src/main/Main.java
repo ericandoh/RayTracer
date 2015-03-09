@@ -16,7 +16,7 @@ public class Main {
 		//read in args here
 		
 		//width, height
-		int width = 800;
+		int width = 600;
 		int height = 600;
 		
 		//make a scene

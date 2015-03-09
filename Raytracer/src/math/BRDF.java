@@ -4,6 +4,11 @@ import raytracer.Light;
 import raytracer.PointLight;
 
 public class BRDF {
+	
+	public static final BRDF RED_DIFFUSE = new BRDF(Color.BLACK, Color.RED, Color.BLACK, 1.0f, Color.BLACK);
+	public static final BRDF YELLOW_DIFFUSE = new BRDF(Color.BLACK, Color.YELLOW, Color.BLACK, 1.0f, Color.BLACK);
+	
+	
 	public Color ka;
 	public Color kd;
 	public Color ks;

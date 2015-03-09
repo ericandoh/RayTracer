@@ -2,6 +2,7 @@ package raytracer;
 
 import java.util.ArrayList;
 
+import math.BRDF;
 import math.Color;
 import math.Ellipsoid;
 import math.Intersection;
@@ -25,7 +26,7 @@ public class World {
 		lights = new ArrayList<Light>();
 	}
 	public void addShape(Shape shape, Vector3 pos) {
-		shapes.add(new WorldObject(shape, pos));
+		shapes.add(new WorldObject(shape, pos, BRDF.YELLOW_DIFFUSE));
 	}
 	public void addLight(Light l) {
 		lights.add(l);
