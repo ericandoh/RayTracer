@@ -71,7 +71,7 @@ public class Scene {
 	
 	public Color paintAtPixel(Color src, float x, float y) {
 		cam.generateRay(tempRay, x, y);
-		rayTracer.trace(src, tempRay, 0);
+		rayTracer.trace(src, tempRay, 0, null);
 		return src;
 	}
 	

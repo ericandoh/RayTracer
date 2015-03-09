@@ -17,7 +17,7 @@ public class Raytracer {
 	}
 	
 	//the main ray tracing algorithm
-	public Color trace(Color src, Ray ray, int depth) {
+	public Color trace(Color src, Ray ray, int depth, WorldObject exclude) {
 		//do not trace if too many reflective rays
 		if (depth >= MAX_DEPTH_RENDER) {
 			src.setBlack();
@@ -25,7 +25,7 @@ public class Raytracer {
 		}
 		//see which object this ray hits
 		Intersection inter = new Intersection();
-		WorldObject hit = world.getIntersectingObject(inter, ray, null);
+		WorldObject hit = world.getIntersectingObject(inter, ray, exclude);
 		if (!inter.intersects) {
 			//no object hit - black space
 			//change color here to sky blue if you want sky blue background
@@ -52,7 +52,7 @@ public class Raytracer {
 			inter.normal.normalize(norm); //create a unit normal vector
 			ray.reflect(reflectRay, norm, inter.intersection);
 			Color ref = new Color();
-			trace(ref, reflectRay, depth + 1);
+			trace(ref, reflectRay, depth + 1, hit);
 			src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
 		}
 		
