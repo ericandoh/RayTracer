@@ -51,10 +51,11 @@ public class Vector3 {
 		return src;
 	}
 	
-	public void set(Vector3 other) {
+	public Vector3 set(Vector3 other) {
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
+		return this;
 	}
 	
 	public void set(float x, float y, float z) {

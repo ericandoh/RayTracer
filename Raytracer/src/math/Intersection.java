@@ -24,6 +24,12 @@ public class Intersection {
 		this.normal = norm;
 		this.intersects = true;
 	}
+	public void set(Point i, float t, Vector3 norm) {
+		this.intersection = i;
+		this.t = t;
+		this.normal = norm;
+		this.intersects = true;
+	}
 	public void set(Ray eye, float t, Vector3 norm) {
 		//get point of eye, set it to point
 		//this.intersection = ...
@@ -46,5 +52,13 @@ public class Intersection {
 	public Intersection invalidate() {
 		this.intersects = false;
 		return this;
+	}
+	
+	@Override
+	public String toString() {
+		if (this.intersects) {
+			return "Point:"+this.intersection + "/Normal:"+this.normal;
+		}
+		return "None";
 	}
 }

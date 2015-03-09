@@ -28,4 +28,22 @@ public class Ray {
 		origDir.subtract(src.direction,  temp); // Rr = Ri - 2N(Ri dot N)
 		return src;
 	}
+	public Point getPointAt(Point src, float t) {
+		direction.scale(src, t);
+		src.add(src, this.point);
+		return src;
+	}
+	
+	public static void main(String[] args) {
+		Ray alongX = new Ray(new Point(-10.0f, 0.0f, 0.0f), new Vector3(1.0f, 0.0f, 0.0f));
+		Point test = new Point();
+		
+		alongX.getPointAt(test, 0);
+		System.out.println(test);
+		alongX.getPointAt(test, 1);
+		System.out.println(test);
+		alongX.getPointAt(test, 3.5f);
+		System.out.println(test);
+		
+	}
 }

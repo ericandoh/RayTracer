@@ -6,4 +6,7 @@ package math;
 
 public class Shape {
 
+	public Intersection getIntersection(Intersection src, Ray eye) {
+		return src.invalidate();
+	}
 }

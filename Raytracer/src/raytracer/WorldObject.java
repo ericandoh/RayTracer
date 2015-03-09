@@ -11,23 +11,16 @@ import math.Vector3;
 public class WorldObject {
 
 	private Shape shape;
-	private Vector3 pos;
 	
 	//private BRDF brdf; <-- BRDF needs to get accessed by raytracer to do recursive reflection calls
 	public BRDF brdf;
 	
 	public WorldObject(Shape shape, Vector3 pos) {
 		this.shape = shape;
-		this.pos = pos;
 	}
 	
 	public Intersection getIntersection(Intersection src, Ray eye) {
-		
-		if (false) {
-			return src.invalidate();
-		}
-		
-		return src;
+		return shape.getIntersection(src, eye);
 	}
 	
 	public void addShading(Color src, Intersection intersection, Light light, Ray lightRay, Ray viewRay) {
