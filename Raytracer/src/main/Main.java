@@ -6,12 +6,18 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import math.Vector3;
+
 public class Main {
+	
+	public static Scene scene;
 	
 	public static void main(String[] args) {
 		
@@ -22,7 +28,7 @@ public class Main {
 		int height = 600;
 		
 		//make a scene
-		Scene scene = new Scene();
+		scene = new Scene();
 		
 		int count = 0;
 		String head;
@@ -49,6 +55,41 @@ public class Main {
 		JFrame frame = new JFrame();
 		JPanel panel = new DrawPanel(img);
 		panel.setPreferredSize(new Dimension(width,height));
+		panel.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				if (arg0.getKeyCode() == KeyEvent.VK_W) {
+					scene.cam.displace(new Vector3(0, 0, -1));
+				}
+				else if (arg0.getKeyCode() == KeyEvent.VK_S) {
+					scene.cam.displace(new Vector3(0, 0, 1));
+				}
+				else if (arg0.getKeyCode() == KeyEvent.VK_A) {
+					scene.cam.displace(new Vector3(1, 0, 0));
+				}
+				else if (arg0.getKeyCode() == KeyEvent.VK_D) {
+					scene.cam.displace(new Vector3(-1, 0, 0));
+				}
+				else {
+					return;
+				}
+				scene.repaintScene();
+			}
+			
+		});
 		frame.setLayout(new BorderLayout());
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();

@@ -17,6 +17,10 @@ public class Camera {
 		imagePlane = new Plane(new Point(-1, 1, 4), new Point(-1, -1, 4), new Point(1, 1, 4), new Point(1, -1, 4));
 	}
 	
+	public void displace(Vector3 step) {
+		cameraCenter.add(cameraCenter, step);
+	}
+	
 	//x, y: floats 0.0-1.0 describing where on screen
 	//src: Ray to set values in
 	public Ray generateRay(Ray src, float x, float y) {

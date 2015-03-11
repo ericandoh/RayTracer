@@ -20,7 +20,7 @@ public class Scene {
 	
 	private World world;
 	
-	private Camera cam;
+	public Camera cam;
 	private Raytracer rayTracer;
 	
 	private int width, height;

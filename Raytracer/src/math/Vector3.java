@@ -68,6 +68,13 @@ public class Vector3 {
 		return (float) Math.sqrt(x * x + y * y + z * z);
 	}
 	
+	public Vector3 crossProd(Vector3 src, Vector3 other) {
+		src.x = this.y * other.z - this.z * other.y;
+		src.y = this.z * other.x - this.x * other.z;
+		src.z = this.x * other.y - this.y * other.x;
+		return src;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Vector3) {
