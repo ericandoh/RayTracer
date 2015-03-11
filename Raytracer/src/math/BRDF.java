@@ -9,6 +9,9 @@ public class BRDF {
 	public static final BRDF YELLOW_DIFFUSE = new BRDF(Color.BLACK, Color.YELLOW, Color.BLACK, 1.0f, Color.BLACK);
 	public static final BRDF BLUE_DIFFUSE = new BRDF(Color.BLACK, Color.BLUE, Color.BLACK, 1.0f, Color.BLACK);
 	
+	public static final BRDF BRDF_SPECIAL_ONE = new BRDF(Color.BLACK, Color.BLUE, Color.WHITE, 30.0f, Color.BLACK);
+	public static final BRDF BRDF_SPECIAL_TWO = new BRDF(Color.BLACK, Color.YELLOW, new Color(0.5f, 0.5f, 0.4f), 10.0f, Color.WHITE);
+	
 	public Color ka;
 	public Color kd;
 	public Color ks;
@@ -34,18 +37,18 @@ public class BRDF {
 		this.kr = kr;
 	}
 	//phong shading algorithm goes here
-	public void addShading(Color src, Intersection intersection, Light light, Ray lightRay, Ray viewRay) {
+	public void addShading(Color src, Intersection intersection, Light light, Vector3 lightDir, Ray viewRay) {
 		//handle ka
 		src.addProduct(ka, light.color);
 		//handle kd
 		//norm(l)*norm(n)
-		float ln = Vector3.normProd(lightRay.direction, intersection.normal);
+		float ln = Vector3.normProd(lightDir, intersection.normal);
 		ln = Math.max(0.0f, ln);
 		src.addProductScale(kd, light.color, ln);
 		//handle ks
 		intersection.normal.scale(rm, 
-				Vector3.normProd(lightRay.direction, intersection.normal) * 2.0f);
-		rm.subtract(rm, lightRay.direction);
+				Vector3.normProd(lightDir, intersection.normal) * 2.0f);
+		rm.subtract(rm, lightDir);
 		float rv = -1.0f * Vector3.normProd(rm, viewRay.direction); //viewRay points from pt to eye, not from eye to pt
 		rv = Math.max(0.0f, rv);
 		rv = (float)Math.pow(rv, ksp);
@@ -65,7 +68,7 @@ public class BRDF {
 		Light light = new PointLight(new Vector3(1.0f, 1.0f, 1.0f), Color.WHITE);
 		//light ray is from surface => light
 		//light ray straight up in y direction
-		Ray lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+		Vector3 lightRay = new Vector3(0.0f, 1.0f, 0.0f);
 		//view ray from surface => viewpoint
 		Ray viewRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
 		
@@ -81,18 +84,18 @@ public class BRDF {
 		model.addShading(result, inter, light, lightRay, viewRay);
 		System.out.println("Diffuse, Straight: " + result);
 		//red light shined at an angle
-		lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f));
+		lightRay = new Vector3(1.0f, 1.0f, 0.0f);
 		result.setBlack();
 		model.addShading(result, inter, light, lightRay, viewRay);
 		System.out.println("Diffuse, Tilted Light: " + result);
 		//red light shined at a sharper angle
-		lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(8.0f, 1.0f, 0.0f));
+		lightRay = new Vector3(8.0f, 1.0f, 0.0f);
 		result.setBlack();
 		model.addShading(result, inter, light, lightRay, viewRay);
 		System.out.println("Diffuse, Tilted Light Extreme: " + result);
 		//colored light on colored object
 		light = new PointLight(new Vector3(1.0f, 1.0f, 1.0f), new Color(0.5f, 0.4f, 0.3f));
-		lightRay = new Ray(new Point(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f));
+		lightRay = new Vector3(1.0f, 1.0f, 0.0f);
 		model = new BRDF(new Color(0.5f, 0.6f, 0.7f), Color.BLACK, Color.BLACK, 1.0f, Color.BLACK);
 		result.setBlack();
 		model.addShading(result, inter, light, lightRay, viewRay);

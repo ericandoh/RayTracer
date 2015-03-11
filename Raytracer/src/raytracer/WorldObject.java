@@ -24,7 +24,7 @@ public class WorldObject {
 		return shape.getIntersection(src, eye);
 	}
 	
-	public void addShading(Color src, Intersection intersection, Light light, Ray lightRay, Ray viewRay) {
-		brdf.addShading(src, intersection, light, lightRay, viewRay);
+	public void addShading(Color src, Intersection intersection, Light light, Vector3 lightDir, Ray viewRay) {
+		brdf.addShading(src, intersection, light, lightDir, viewRay);
 	}
 }

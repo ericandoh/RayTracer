@@ -33,11 +33,14 @@ public class World {
 		lights.add(l);
 	}
 	public void defaultScene() {
-		this.addShape(new Ellipsoid(), BRDF.RED_DIFFUSE);
-		this.addShape(new Ellipsoid(new Point(1, 0.3f, 2)), BRDF.YELLOW_DIFFUSE);
-		this.addShape(new Ellipsoid(new Point(-1, -0.4f, 3)), BRDF.BLUE_DIFFUSE);
+		//this.addShape(new Ellipsoid(), BRDF.RED_DIFFUSE);
+		//this.addShape(new Ellipsoid(new Point(1, 0.3f, -1)), BRDF.BRDF_SPECIAL_ONE);
+		//this.addShape(new Ellipsoid(new Point(-1, -0.4f, 1)), BRDF.BRDF_SPECIAL_TWO);
 		
-		this.addLight(new PointLight(new Vector3(5, 5, 5), Color.WHITE));
+		this.addShape(new Ellipsoid(new Point(0, 0, 3)), BRDF.BRDF_SPECIAL_TWO);
+		
+		this.addLight(new PointLight(new Vector3(5, 5, 10), Color.WHITE));
+		//this.addLight(new PointLight(new Vector3(-5, -5, -5), Color.YELLOW));
 	}
 	
 	public WorldObject getIntersectingObject(Intersection src, Ray eye, WorldObject exclude) {

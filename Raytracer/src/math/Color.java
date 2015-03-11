@@ -5,9 +5,11 @@ public class Color {
 	public static final Color WHITE = new Color(1.0f, 1.0f, 1.0f);
 	public static final Color BLACK = new Color(0.0f, 0.0f, 0.0f);
 	
-	public static final Color RED = new Color(1.0f, 0.0f, 0.0f);
-	public static final Color YELLOW = new Color(1.0f, 1.0f, 0.0f);
-	public static final Color BLUE = new Color(0.0f, 0.0f, 1.0f);
+	public static final Color RED = new Color(0.5f, 0.0f, 0.0f);
+	public static final Color YELLOW = new Color(0.5f, 0.5f, 0.0f);
+	public static final Color BLUE = new Color(0.0f, 0.0f, 0.5f);
+	
+	public static final Color GRAY = new Color(0.5f, 0.5f, 0.5f);
 	
 	
 	
@@ -47,6 +49,23 @@ public class Color {
 		this.g = other.g;
 		this.b = other.b;
 	}
+	
+	public void validate() {
+		if (this.r < 0)
+			this.r = 0;
+		if (this.r > 1.0f)
+			this.r = 1.0f;
+		if (this.g < 0)
+			this.g = 0;
+		if (this.g > 1.0f)
+			this.g = 1.0f;
+		if (this.b < 0)
+			this.b = 0;
+		if (this.b > 1.0f)
+			this.b = 1.0f;
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "(" + this.r + "," + this.g + "," + this.b + ")";

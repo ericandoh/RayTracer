@@ -50,6 +50,7 @@ public class Ellipsoid extends Shape {
 		eye.getPointAt(src.intersection, ans);
 		src.intersects = true;
 		src.intersection.subtract(src.normal, this.center);
+		src.normal.normalize(src.normal);
 		src.t = ans;
 		return src;
 	}
