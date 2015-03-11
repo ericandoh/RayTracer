@@ -18,6 +18,7 @@ import math.Vector3;
 public class Main {
 	
 	public static Scene scene;
+	public static BufferedImage canvas;
 	
 	public static void main(String[] args) {
 		
@@ -45,7 +46,7 @@ public class Main {
 		//tell scene to paint itself
 		scene.paintScene(width, height);
 		
-		BufferedImage canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		scene.fillImage(canvas);
 		
 		showFrame(width, height, canvas);
@@ -53,25 +54,14 @@ public class Main {
 	
 	public static void showFrame(int width, int height, BufferedImage img) {
 		JFrame frame = new JFrame();
-		JPanel panel = new DrawPanel(img);
+		final DrawPanel panel = new DrawPanel(img);
 		panel.setPreferredSize(new Dimension(width,height));
-		panel.addKeyListener(new KeyListener() {
+		frame.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
 				if (arg0.getKeyCode() == KeyEvent.VK_W) {
+					System.out.println("W");
 					scene.cam.displace(new Vector3(0, 0, -1));
 				}
 				else if (arg0.getKeyCode() == KeyEvent.VK_S) {
@@ -87,6 +77,20 @@ public class Main {
 					return;
 				}
 				scene.repaintScene();
+				scene.fillImage(canvas);
+				panel.setImg(canvas);
+				panel.repaint();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
 			}
 			
 		});
@@ -102,6 +106,9 @@ class DrawPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private BufferedImage src;
 	public DrawPanel(BufferedImage img) {
+		this.src = img;
+	}
+	public void setImg(BufferedImage img) {
 		this.src = img;
 	}
 	@Override

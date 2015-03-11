@@ -67,6 +67,7 @@ public class Scene {
 	}
 	public void repaintScene() {
 		//all the magic happens here
+		System.out.println("Repainting");
 		for (int x = 0; x < screenColors.length; x++) {
 			for (int y = 0; y < screenColors[0].length; y++) {
 				screenColors[x][y].setBlack();

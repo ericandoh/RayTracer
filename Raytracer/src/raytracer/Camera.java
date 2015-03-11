@@ -19,6 +19,10 @@ public class Camera {
 	
 	public void displace(Vector3 step) {
 		cameraCenter.add(cameraCenter, step);
+		imagePlane.ll.add(imagePlane.ll, step);
+		imagePlane.lr.add(imagePlane.lr, step);
+		imagePlane.ul.add(imagePlane.ul, step);
+		imagePlane.ur.add(imagePlane.ur, step);
 	}
 	
 	//x, y: floats 0.0-1.0 describing where on screen
