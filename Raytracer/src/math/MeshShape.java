@@ -10,6 +10,14 @@ public class MeshShape extends Shape {
 		//make from some .obj representation
 	}
 	
+	public MeshShape(String name) {
+		//with a name
+	}
+	
+	public void addTriangle(Triangle t) {
+		triangles.add(t);
+	}
+	
 	@Override
 	public Intersection getIntersection(Intersection src, Ray eye) {
 		

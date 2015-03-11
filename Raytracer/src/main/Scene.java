@@ -1,11 +1,13 @@
 package main;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import raytracer.Camera;
 import raytracer.Light;
 import raytracer.Raytracer;
 import raytracer.World;
+import raytracer.WorldObject;
 import math.BRDF;
 import math.Ray;
 import math.Shape;
@@ -32,6 +34,10 @@ public class Scene {
 		cam = new Camera();
 		world = new World();
 		rayTracer = new Raytracer(world);
+	}
+	
+	public void addObjects(ArrayList<WorldObject> objs) {
+		world.addObjects(objs);
 	}
 	
 	public void addShape(Shape shape, BRDF bird) {

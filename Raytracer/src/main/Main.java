@@ -1,5 +1,7 @@
 package main;
 
+import io.ObjReader;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -21,6 +23,15 @@ public class Main {
 		
 		//make a scene
 		Scene scene = new Scene();
+		
+		int count = 0;
+		String head;
+		while(count < args.length) {
+			head = args[count++];
+			if (head.equals("obj")) {
+				scene.addObjects(ObjReader.readObj(args[count++]));
+			}
+		}
 		
 		//give scene some objects
 		scene.defaultScene();

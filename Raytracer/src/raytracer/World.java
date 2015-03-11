@@ -26,6 +26,9 @@ public class World {
 		shapes = new ArrayList<WorldObject>();
 		lights = new ArrayList<Light>();
 	}
+	public void addObjects(ArrayList<WorldObject> objs) {
+		shapes.addAll(objs);
+	}
 	public void addShape(Shape shape, BRDF bird) {
 		shapes.add(new WorldObject(shape, bird));
 	}
