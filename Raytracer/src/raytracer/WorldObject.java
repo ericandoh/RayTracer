@@ -10,7 +10,7 @@ import math.Vector3;
 
 public class WorldObject {
 
-	private Shape shape;
+	public Shape shape;
 	
 	//private BRDF brdf; <-- BRDF needs to get accessed by raytracer to do recursive reflection calls
 	public BRDF brdf;

@@ -34,6 +34,7 @@ public class ObjReader {
 			while ((line = mapReader.readLine()) != null) {
 				processObjLine(line, vertices, meshes, matLst, wobjs);
 			}
+			mapReader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: "+objFile.getAbsolutePath());
 		} catch (IOException e) {
@@ -62,7 +63,9 @@ public class ObjReader {
 		}
 		else if (starter.equals("mtllib")) {
 			//load a material
-			System.out.println("Loading materials not supported (yet)!");
+			if (parts.length < 2)
+				return;
+			readMtl(parts[1], matLst);
 			return;
 		}
 		else if (starter.equals("o")) {
@@ -80,6 +83,7 @@ public class ObjReader {
 				throw new MalformedObjFileException("Need 3 points for vertex");
 			Point p = new Point(Float.parseFloat(parts[1]), 
 					Float.parseFloat(parts[2]), Float.parseFloat(parts[3]));
+			vertices.add(p);
 		}
 		else if (starter.equals("usemtl")) {
 			wobjs.get(0).brdf = matLst.get(parts[1]);
@@ -87,25 +91,25 @@ public class ObjReader {
 		else if (starter.equals("f")) {
 			if (parts.length == 4) {
 				//triangle
-				Point p0 = vertices.get(Integer.parseInt(parts[1]));
-				Point p1 = vertices.get(Integer.parseInt(parts[2]));
-				Point p2 = vertices.get(Integer.parseInt(parts[3]));
+				Point p0 = vertices.get(Integer.parseInt(parts[1]) - 1);
+				Point p1 = vertices.get(Integer.parseInt(parts[2]) - 1);
+				Point p2 = vertices.get(Integer.parseInt(parts[3]) - 1);
 				Triangle t = new Triangle(p0, p1, p2);
 				meshes.get(0).addTriangle(t);
 			}
 			else if (parts.length == 5) {
 				//quad
-				Point p0 = vertices.get(Integer.parseInt(parts[1]));
-				Point p1 = vertices.get(Integer.parseInt(parts[2]));
-				Point p2 = vertices.get(Integer.parseInt(parts[3]));
-				Point p3 = vertices.get(Integer.parseInt(parts[4]));
+				Point p0 = vertices.get(Integer.parseInt(parts[1]) - 1);
+				Point p1 = vertices.get(Integer.parseInt(parts[2]) - 1);
+				Point p2 = vertices.get(Integer.parseInt(parts[3]) - 1);
+				Point p3 = vertices.get(Integer.parseInt(parts[4]) - 1);
 				Triangle t0 = new Triangle(p0, p1, p2);
 				Triangle t1 = new Triangle(p2, p3, p0);
 				meshes.get(0).addTriangle(t0);
 				meshes.get(0).addTriangle(t1);
 			}
 			else {
-				throw new MalformedObjFileException("Each face should be specified by 3 or 4 points");
+				throw new MalformedObjFileException("Faces specified by more than 4 points not supported");
 			}
 		}
 		else {
@@ -132,6 +136,7 @@ public class ObjReader {
 			while ((line = mapReader.readLine()) != null) {
 				last = processMatLine(line, matLst, last);
 			}
+			mapReader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: "+matFile.getAbsolutePath());
 		} catch (IOException e) {
