@@ -22,10 +22,10 @@ public class ObjReader {
 		ArrayList<WorldObject> wobjs = new ArrayList<WorldObject>();
 		HashMap<String, BRDF> matLst = new HashMap<String, BRDF>();
 		
-		File objFile = new File(System.getProperty("user.dir") + "\\" + fileName);
+		File objFile = new File(System.getProperty("user.dir") + "/" + fileName);
 		
 		if (!objFile.exists()) {
-			System.out.println(fileName + " does not exist");
+			System.out.println(fileName + " does not exist at path "+objFile.getAbsolutePath());
 			return wobjs;
 		}
 		try {
@@ -36,7 +36,7 @@ public class ObjReader {
 			}
 			mapReader.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found: "+objFile.getAbsolutePath());
+			System.out.println("File not found: "+objFile.getPath());
 		} catch (IOException e) {
 			System.out.println("IO Error!");
 			e.printStackTrace();
@@ -121,7 +121,7 @@ public class ObjReader {
 	}
 	
 	public static void readMtl(String fileName, HashMap<String, BRDF> matLst) {
-		File matFile = new File(System.getProperty("user.dir") + "\\" + fileName);
+		File matFile = new File(System.getProperty("user.dir") + "/" + fileName);
 		
 		if (!matFile.exists()) {
 			System.out.println(fileName + " does not exist");

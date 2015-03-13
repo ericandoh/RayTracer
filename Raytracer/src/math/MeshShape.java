@@ -8,10 +8,12 @@ public class MeshShape extends Shape {
 	
 	public MeshShape() {
 		//make from some .obj representation
+		triangles = new ArrayList<Triangle>();
 	}
 	
 	public MeshShape(String name) {
 		//with a name
+		this();
 	}
 	
 	public void addTriangle(Triangle t) {
