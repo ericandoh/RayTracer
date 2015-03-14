@@ -62,7 +62,7 @@ public class Raytracer {
 			perp1.y = ref_dir.y;
 			perp1.z = ref_dir.x;
 			ref_dir.crossProd(perp2, perp1);
-			for(int i = 0; i < 100; i++) {
+			for(int i = 0; i < 64; i++) {
 				float x, y;
 				//do {
 					x = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);

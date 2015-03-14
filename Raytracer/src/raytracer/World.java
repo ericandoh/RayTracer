@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import math.BRDF;
 import math.Color;
 import math.Ellipsoid;
+import math.Triangle;
 import math.Intersection;
 import math.Point;
 import math.Ray;
@@ -42,10 +43,11 @@ public class World {
 		
 		this.addShape(new Ellipsoid(new Point(1, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
 		this.addShape(new Ellipsoid(new Point(-2, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
+		this.addShape(new Triangle(new Point(4, 0, 0), new Point(4, 0, 4), new Point(4, 4, 4)), BRDF.BRDF_SPECIAL_THREE);
 		
 		this.addLight(new PointLight(new Vector3(5, 5, 10), Color.WHITE));
 		this.addLight(new PointLight(new Vector3(-5, -5, -5), Color.BLUE));
-		//this.addLight(new DirectionalLight(new Vector3(1, 0, 0), Color.GRAY));
+		this.addLight(new DirectionalLight(new Vector3(1, 0, 0), Color.GRAY));
 	}
 	
 	public WorldObject getIntersectingObject(Intersection src, Ray eye, WorldObject exclude) {
