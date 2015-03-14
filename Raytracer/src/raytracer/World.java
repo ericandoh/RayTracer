@@ -40,10 +40,11 @@ public class World {
 		//this.addShape(new Ellipsoid(new Point(1, 0.3f, -1)), BRDF.BRDF_SPECIAL_ONE);
 		//this.addShape(new Ellipsoid(new Point(-1, -0.4f, 1)), BRDF.BRDF_SPECIAL_TWO);
 		
-		this.addShape(new Ellipsoid(new Point(0, 0, 3)), BRDF.BRDF_SPECIAL_TWO);
+		this.addShape(new Ellipsoid(new Point(1, 0, 0)), BRDF.BRDF_SPECIAL_TWO);
+		this.addShape(new Ellipsoid(new Point(-1, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
 		
 		this.addLight(new PointLight(new Vector3(5, 5, 10), Color.WHITE));
-		//this.addLight(new PointLight(new Vector3(-5, -5, -5), Color.YELLOW));
+		this.addLight(new PointLight(new Vector3(-5, -5, -5), Color.BLUE));
 	}
 	
 	public WorldObject getIntersectingObject(Intersection src, Ray eye, WorldObject exclude) {

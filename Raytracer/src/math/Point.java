@@ -10,8 +10,7 @@ public class Point extends Vector3 {
 	public Vector3 subtract(Vector3 src, Point b) {
 		return super.subtract(src, b);
 	}
-	@Override
-	public Vector3 set(Vector3 p) {
+	public Point set(Point p) {
 		this.x = p.x;
 		this.y = p.y;
 		this.z = p.z;

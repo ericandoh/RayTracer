@@ -57,7 +57,7 @@ public class Intersection {
 	@Override
 	public String toString() {
 		if (this.intersects) {
-			return "Point:"+this.intersection + "/Normal:"+this.normal;
+			return "Point:"+this.intersection + "/Normal:"+this.normal + "/Time:" + this.t;
 		}
 		return "None";
 	}
