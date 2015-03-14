@@ -48,17 +48,44 @@ public class Raytracer {
 				hit.addShading(src, inter, light, normalizedLightDirection, ray);
 			}
 		}
-		if(hit.brdf.kr.r > 0 && hit.brdf.kr.g > 0 && hit.brdf.kr.b > 0) {
+		if(hit.brdf.kr.dot(hit.brdf.kr) > 0) {
 			Ray reflectRay = new Ray();
 			Vector3 norm = new Vector3();
 			inter.normal.normalize(norm); //create a unit normal vector
 			ray.reflect(reflectRay, norm, inter.intersection);
-			Color ref = new Color();
-			trace(ref, reflectRay, depth + 1, hit);
-			src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
+			
+			//send out multiple reflected rays in a cone instead of just one
+			Vector3 ref_dir = reflectRay.direction;
+			Vector3 perp1 = new Vector3(); //create 2 perpendicular vectors to scale
+			Vector3 perp2 = new Vector3();
+			perp1.x = -1.0f*ref_dir.z;
+			perp1.y = ref_dir.y;
+			perp1.z = ref_dir.x;
+			ref_dir.crossProd(perp2, perp1);
+			for(int i = 0; i < 100; i++) {
+				float x, y;
+				//do {
+					x = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);
+					y = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);
+				//} while((x * x + y * y) > hit.brdf.kr.dot(hit.brdf.kr));
+				Vector3 new_dir = new Vector3();
+				perp1.scale(perp1,  x);
+				ref_dir.add(new_dir, perp1);
+				perp2.scale(perp2, y);
+				new_dir.add(new_dir, perp2);
+				new_dir.normalize(new_dir);
+				Color ref = new Color();
+				Ray new_ray = new Ray();
+				new_ray.point = reflectRay.point;
+				new_ray.direction = new_dir;
+				trace(ref, new_ray, depth + 1, hit);
+				src.addProduct(ref, hit.brdf.kr);
+			}
+			
+			//Color ref = new Color();
+			//trace(ref, reflectRay, depth + 1, hit);
+			//src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
 		}
-		
-		
 		return src;
 	}
 }

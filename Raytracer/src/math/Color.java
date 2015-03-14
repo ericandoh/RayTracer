@@ -50,6 +50,9 @@ public class Color {
 		this.g = other.g;
 		this.b = other.b;
 	}
+	public float dot(Color other) {
+		return this.r * other.r + this.g * other.g + this.b * other.b;
+	}
 	
 	public void validate() {
 		if (this.r < 0)

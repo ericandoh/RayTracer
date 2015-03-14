@@ -11,7 +11,7 @@ public class BRDF {
 	
 	public static final BRDF BRDF_SPECIAL_ONE = new BRDF(Color.BLACK, Color.BLUE, Color.WHITE, 30.0f, Color.BLACK);
 	public static final BRDF BRDF_SPECIAL_TWO = new BRDF(Color.BLACK, Color.YELLOW, new Color(0.5f, 0.5f, 0.4f), 10.0f, Color.WHITE);
-	public static final BRDF BRDF_SPECIAL_THREE = new BRDF(new Color(0.1f, 0.1f, 0.1f), Color.YELLOW, new Color(0.5f, 0.5f, 0.4f), 10.0f, new Color(0.5f, 0.5f, 0.5f));
+	public static final BRDF BRDF_SPECIAL_THREE = new BRDF(Color.BLACK, Color.YELLOW, new Color(0.5f, 0.5f, 0.4f), 10.0f, new Color(0.5f, 0.2f, 0.5f));
 	
 	public Color ka;
 	public Color kd;
