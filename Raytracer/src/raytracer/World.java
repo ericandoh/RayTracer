@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 import math.BRDF;
 import math.Color;
-import math.Ellipsoid;
-import math.Triangle;
 import math.Intersection;
-import math.Point;
 import math.Ray;
 import math.Shape;
 import math.Vector3;
@@ -41,13 +38,33 @@ public class World {
 		//this.addShape(new Ellipsoid(new Point(1, 0.3f, -1)), BRDF.BRDF_SPECIAL_ONE);
 		//this.addShape(new Ellipsoid(new Point(-1, -0.4f, 1)), BRDF.BRDF_SPECIAL_TWO);
 		
-		this.addShape(new Ellipsoid(new Point(1, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
-		this.addShape(new Ellipsoid(new Point(-2, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
-		this.addShape(new Triangle(new Point(4, 0, 0), new Point(4, 0, 4), new Point(4, 4, 4)), BRDF.BRDF_SPECIAL_THREE);
+		//this.addShape(new Ellipsoid(new Point(1, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
+		//this.addShape(new Ellipsoid(new Point(-2, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
+		//this.addShape(new Triangle(new Point(4, 4, 4), new Point(4, 0, 4), new Point(4, 0, 0)), BRDF.BRDF_SPECIAL_THREE);
+		
+		/*
+		//box
+		this.addShape(new Triangle(new Point(1, -1, 1), new Point(-1, -1, 1), new Point(-1, -1, -1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(-1, 1, -1), new Point(-1, 1, 1), new Point(1, 1, 1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(1, 1, -1), new Point(1, 1, 1), new Point(1, -1, 1)), BRDF.RED_DIFFUSE);
+		
+		this.addShape(new Triangle(new Point(1, 1, 1), new Point(-1, 1, 1), new Point(-1, -1, 1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(-1, -1, 1), new Point(-1, 1, 1), new Point(-1, 1, -1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(1, -1, -1), new Point(-1, -1, -1), new Point(-1, 1, -1)), BRDF.RED_DIFFUSE);
+		
+		this.addShape(new Triangle(new Point(1, -1, -1), new Point(1, -1, 1), new Point(-1, -1, -1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(1, 1, -1), new Point(-1, 1, -1), new Point(1, 1, 1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(1, -1, -1), new Point(1, 1, -1), new Point(1, -1, 1)), BRDF.RED_DIFFUSE);
+		
+		this.addShape(new Triangle(new Point(1, -1, 1), new Point(1, 1, 1), new Point(-1, -1, 1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(-1, -1, -1), new Point(-1, -1, 1), new Point(-1, 1, -1)), BRDF.RED_DIFFUSE);
+		this.addShape(new Triangle(new Point(1, 1, -1), new Point(1, -1, -1), new Point(-1, 1, -1)), BRDF.RED_DIFFUSE);
+		*/
+		
 		
 		this.addLight(new PointLight(new Vector3(5, 5, 10), Color.WHITE));
 		this.addLight(new PointLight(new Vector3(-5, -5, -5), Color.BLUE));
-		this.addLight(new DirectionalLight(new Vector3(1, 0, 0), Color.GRAY));
+		this.addLight(new DirectionalLight(new Vector3(1, -5, -5), Color.WHITE));
 	}
 	
 	public WorldObject getIntersectingObject(Intersection src, Ray eye, WorldObject exclude) {

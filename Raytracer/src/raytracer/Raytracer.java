@@ -7,7 +7,7 @@ import math.Vector3;
 
 public class Raytracer {
 	
-	public static final int MAX_DEPTH_RENDER = 10;
+	public static final int MAX_DEPTH_RENDER = 1;
 	
 	private World world;
 	
@@ -62,7 +62,7 @@ public class Raytracer {
 			perp1.y = ref_dir.y;
 			perp1.z = ref_dir.x;
 			ref_dir.crossProd(perp2, perp1);
-			for(int i = 0; i < 64; i++) {
+			for(int i = 0; i < 4; i++) {
 				float x, y;
 				//do {
 					x = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);

@@ -39,4 +39,7 @@ public class Plane extends Shape {
 		pt.z = temp2.z;
 		return pt;
 	}
+	public String toString() {
+		return ""+this.ul+this.ll+this.ur + this.lr;
+	}
 }

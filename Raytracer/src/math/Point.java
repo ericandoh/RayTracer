@@ -1,6 +1,9 @@
 package math;
 
 public class Point extends Vector3 {
+	
+	public static final Point ORIGIN = new Point(0, 0, 0);
+	
 	public Point(float x, float y, float z) {
 		super(x, y, z);
 	}

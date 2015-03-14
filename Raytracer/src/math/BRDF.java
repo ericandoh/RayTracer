@@ -56,6 +56,13 @@ public class BRDF {
 		rv = (float)Math.pow(rv, ksp);
 		src.addProductScale(ks, light.color, rv);
 	}
+	public void set(BRDF other) {
+		this.ka.set(other.ka);
+		this.kd.set(other.kd);
+		this.ks.set(other.ks);
+		this.ksp = other.ksp;
+		this.kr.set(other.kr);
+	}
 	
 	public static void main(String[] args) {
 		//testing Phong Shading calculations...

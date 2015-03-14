@@ -75,8 +75,7 @@ public class ObjReader {
 			else
 				shape = new MeshShape(parts[1]);
 			meshes.add(0, shape);
-			wobjs.add(new WorldObject(shape, null));
-			vertices.clear();
+			wobjs.add(0, new WorldObject(shape, null));
 		}
 		else if (starter.equals("v")) {
 			if (parts.length < 4)
@@ -86,7 +85,23 @@ public class ObjReader {
 			vertices.add(p);
 		}
 		else if (starter.equals("usemtl")) {
-			wobjs.get(0).brdf = matLst.get(parts[1]);
+			BRDF bird = matLst.get(parts[1]);
+			if (bird == null) {
+				System.out.println("No material named " + parts[1]);
+				wobjs.get(0).brdf = BRDF.RED_DIFFUSE;
+			}
+			else {
+				
+				if (wobjs.get(0).brdf == null) {
+					wobjs.get(0).brdf = matLst.get(parts[1]);
+				}
+				else {
+					MeshShape shape;
+					shape = new MeshShape(wobjs.get(0).toString() + "+");
+					meshes.add(0, shape);
+					wobjs.add(0, new WorldObject(shape, matLst.get(parts[1])));
+				}
+			}
 		}
 		else if (starter.equals("f")) {
 			if (parts.length == 4) {
@@ -114,7 +129,7 @@ public class ObjReader {
 		}
 		else {
 			//unknown - just skip
-			System.out.println("Unknown - " + starter);
+			//System.out.println("Unknown - " + starter);
 		}
 		
 		
@@ -128,7 +143,7 @@ public class ObjReader {
 			return;
 		}
 		
-		BRDF last = null;
+		String last = null;
 		
 		try {
 			BufferedReader mapReader = new BufferedReader(new FileReader(matFile));
@@ -150,7 +165,7 @@ public class ObjReader {
 		return;
 	}
 	
-	public static BRDF processMatLine(String line, HashMap<String, BRDF> matLst, BRDF last) throws MalformedObjFileException {
+	public static String processMatLine(String line, HashMap<String, BRDF> matLst, String last) throws MalformedObjFileException {
 		String[] parts = line.split(" ");
 		if (parts.length == 0) {
 			return last;
@@ -164,33 +179,33 @@ public class ObjReader {
 				throw new MalformedObjFileException("Materials need names");
 			BRDF brdf = new BRDF();
 			matLst.put(parts[1], brdf);
-			return brdf;
+			return parts[1];
 		}
 		else if (starter.equals("Ns")) {
 			if (parts.length < 2)
 				throw new MalformedObjFileException("Ns invalid");
-			last.ksp = Float.parseFloat(parts[1]);
+			matLst.get(last).ksp = Float.parseFloat(parts[1]);
 		}
 		else if (starter.equals("Ka")) {
 			if (parts.length < 4)
 				throw new MalformedObjFileException("Ns invalid");
-			last.ka.r = Float.parseFloat(parts[1]);
-			last.ka.g = Float.parseFloat(parts[2]);
-			last.ka.b = Float.parseFloat(parts[3]);
+			matLst.get(last).ka.r = Float.parseFloat(parts[1]);
+			matLst.get(last).ka.g = Float.parseFloat(parts[2]);
+			matLst.get(last).ka.b = Float.parseFloat(parts[3]);
 		}
 		else if (starter.equals("Kd")) {
 			if (parts.length < 4)
 				throw new MalformedObjFileException("Ns invalid");
-			last.kd.r = Float.parseFloat(parts[1]);
-			last.kd.g = Float.parseFloat(parts[2]);
-			last.kd.b = Float.parseFloat(parts[3]);
+			matLst.get(last).kd.r = Float.parseFloat(parts[1]);
+			matLst.get(last).kd.g = Float.parseFloat(parts[2]);
+			matLst.get(last).kd.b = Float.parseFloat(parts[3]);
 		}
 		else if (starter.equals("Ks")) {
 			if (parts.length < 4)
 				throw new MalformedObjFileException("Ns invalid");
-			last.ks.r = Float.parseFloat(parts[1]);
-			last.ks.g = Float.parseFloat(parts[2]);
-			last.ks.b = Float.parseFloat(parts[3]);
+			matLst.get(last).ks.r = Float.parseFloat(parts[1]);
+			matLst.get(last).ks.g = Float.parseFloat(parts[2]);
+			matLst.get(last).ks.b = Float.parseFloat(parts[3]);
 		}
 		else {
 			//not supported:

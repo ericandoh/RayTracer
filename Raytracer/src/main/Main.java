@@ -73,6 +73,12 @@ public class Main {
 				else if (arg0.getKeyCode() == KeyEvent.VK_D) {
 					scene.cam.displace(new Vector3(-1, 0, 0));
 				}
+				else if (arg0.getKeyCode() == KeyEvent.VK_C) {
+					scene.cam.displace(new Vector3(0, -1, 0));
+				}
+				else if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+					scene.cam.displace(new Vector3(0, 1, 0));
+				}
 				else {
 					return;
 				}

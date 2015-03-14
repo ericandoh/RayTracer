@@ -25,6 +25,8 @@ public class Scene {
 	
 	private int width, height;
 	
+	private boolean tracing;
+	
 	//temp variables
 	//for multithreading, give each thread its own temp values
 	private Ray tempRay = new Ray();
@@ -34,6 +36,7 @@ public class Scene {
 		cam = new Camera();
 		world = new World();
 		rayTracer = new Raytracer(world);
+		tracing = false;
 	}
 	
 	public void addObjects(ArrayList<WorldObject> objs) {
@@ -67,13 +70,23 @@ public class Scene {
 	}
 	public void repaintScene() {
 		//all the magic happens here
+		if (tracing) {
+			return;
+		}
+		tracing = true;
 		System.out.println("Repainting");
+		int tenth = screenColors.length * screenColors[0].length / 10;
+		int count = 0;
 		for (int x = 0; x < screenColors.length; x++) {
-			for (int y = 0; y < screenColors[0].length; y++) {
+			for (int y = 0; y < screenColors[x].length; y++) {
+				count++;
 				screenColors[x][y].setBlack();
 				paintAtPixel(screenColors[x][y], (float)(x) / width, (float)(y) / height);
+				if (count % tenth == 0)
+					System.out.println(count / tenth * 10 + "% done");
 			}
 		}
+		tracing = false;
 	}
 	
 	public Color paintAtPixel(Color src, float x, float y) {
