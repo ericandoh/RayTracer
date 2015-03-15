@@ -8,6 +8,8 @@ public class MeshShape extends Shape {
 	
 	private Intersection temp0 = new Intersection();
 	
+	private BoundingBox box;
+	
 	private String name;
 	
 	public MeshShape() {
