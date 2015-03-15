@@ -22,6 +22,10 @@ public class ObjReader {
 		ArrayList<WorldObject> wobjs = new ArrayList<WorldObject>();
 		HashMap<String, BRDF> matLst = new HashMap<String, BRDF>();
 		
+		if (!fileName.endsWith(".obj")) {
+			fileName = fileName + ".obj";
+		}
+		
 		File objFile = new File(System.getProperty("user.dir") + "/" + fileName);
 		
 		if (!objFile.exists()) {
@@ -136,6 +140,11 @@ public class ObjReader {
 	}
 	
 	public static void readMtl(String fileName, HashMap<String, BRDF> matLst) {
+		
+		if (!fileName.endsWith(".mtl")) {
+			fileName = fileName + ".mtl";
+		}
+		
 		File matFile = new File(System.getProperty("user.dir") + "/" + fileName);
 		
 		if (!matFile.exists()) {
