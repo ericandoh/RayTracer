@@ -62,6 +62,13 @@ public class Camera {
 		imagePlane.ll.subtract(imagePlane.ll, sideVector1);
 	}
 	
+	public void setImagePlaneCorners(Point ll, Point lr, Point ul, Point ur) {
+		imagePlane.ll.set(ll);
+		imagePlane.lr.set(lr);
+		imagePlane.ul.set(ul);
+		imagePlane.ur.set(ur);
+	}
+	
 	//x, y: floats 0.0-1.0 describing where on screen
 	//src: Ray to set values in
 	public Ray generateRay(Ray src, float x, float y) {

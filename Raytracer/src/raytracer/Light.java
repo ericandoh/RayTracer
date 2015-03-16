@@ -14,4 +14,8 @@ public class Light {
 	public void generateLightRay(Ray src, Color c, Point pos) {
 		//set src, c
 	}
+	
+	public boolean isAmbient() {
+		return false;
+	}
 }

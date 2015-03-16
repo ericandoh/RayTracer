@@ -50,6 +50,11 @@ public class Color {
 		this.g = other.g;
 		this.b = other.b;
 	}
+	public void set(float r, float g, float b) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+	}
 	public float dot(Color other) {
 		return this.r * other.r + this.g * other.g + this.b * other.b;
 	}

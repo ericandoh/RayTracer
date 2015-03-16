@@ -12,6 +12,10 @@ public class Ellipsoid extends Shape {
 	public Ellipsoid(Point center) {
 		this(center, new Vector3(1, 1, 1));
 	}
+	public Ellipsoid(Point center, float dim) {
+		this.center = center;
+		this.dimensions = new Vector3(dim, dim, dim);
+	}
 	
 	public Ellipsoid(Point center, Vector3 dimensions) {
 		this.center = center;
