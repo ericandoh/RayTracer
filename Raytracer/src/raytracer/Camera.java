@@ -11,12 +11,12 @@ public class Camera {
 	private Plane imagePlane;
 	
 	public Camera() {
-		//cameraCenter = new Point(-3.5f, 7.0f, 3.5f);
-		cameraCenter = new Point(-3.5f, 2.0f, 3.5f);
+		cameraCenter = new Point(-3.5f, 7.0f, 3.5f);
+		//cameraCenter = new Point(-3.5f, 2.0f, 3.5f);
 		imagePlane = new Plane();
 		
-		lookAt(Point.ORIGIN);
-		//lookAt(new Point(0, 2, 0));
+		//lookAt(Point.ORIGIN);
+		lookAt(new Point(0, 2, 0));
 	}
 	
 	public void displace(Vector3 step) {
