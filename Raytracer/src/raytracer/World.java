@@ -7,6 +7,7 @@ import math.Color;
 import math.Intersection;
 import math.Ray;
 import math.Shape;
+import math.Transformation;
 import math.Vector3;
 
 /*
@@ -27,8 +28,10 @@ public class World {
 	public void addObjects(ArrayList<WorldObject> objs) {
 		shapes.addAll(objs);
 	}
-	public void addShape(Shape shape, BRDF bird) {
-		shapes.add(new WorldObject(shape, bird));
+	public void addShape(Shape shape, BRDF bird, Transformation transform) {
+		WorldObject addMe = new WorldObject(shape, bird);
+		addMe.setTransformation(transform);
+		shapes.add(addMe);
 	}
 	public void addLight(Light l) {
 		lights.add(l);

@@ -50,8 +50,9 @@ public class Raytracer {
 			world.getIntersectingObject(isBlocked, lightRay, hit);
 			if (!isBlocked.intersects) {
 				//not blocked, so do shading calculations for this light ray
-				
-				hit.addShading(src, inter, light, normalizedLightDirection, ray);
+				//src, intersection (for normal), light (for color), 
+				//normalizedLightDir = dir, ray.direction = view ray direction
+				hit.addShading(src, inter.normal, light, normalizedLightDirection, ray.direction);
 			}
 		}
 		if(hit.brdf.kr.dot(hit.brdf.kr) > 0) {

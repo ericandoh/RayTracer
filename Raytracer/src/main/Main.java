@@ -43,7 +43,7 @@ public class Main {
 		int count = 0;
 		String head;
 		BRDF currentBRDF = new BRDF();
-		Transformation currentTransform = new Transformation();
+		Transformation currentTransform = null;
 		while(count < args.length) {
 			head = args[count++];
 			if (head.equals("default")) {
@@ -86,10 +86,11 @@ public class Main {
 				float cy = Float.parseFloat(args[count++]);
 				float cz = Float.parseFloat(args[count++]);
 				float r = Float.parseFloat(args[count++]);
-				scene.addShape(new Ellipsoid(new Point(cx, cy, cz), r), currentBRDF);
+				scene.addShape(new Ellipsoid(new Point(cx, cy, cz), r), currentBRDF, currentTransform);
 				//add transform to this
 				//currentBRDF = new BRDF();
-				currentTransform = new Transformation();
+				//reset transform for next object...?
+				currentTransform = null;
 			}
 			else if (head.equals("tri")) {
 				float ax = Float.parseFloat(args[count++]);
@@ -106,9 +107,10 @@ public class Main {
 				
 				scene.addShape(new Triangle(new Point(ax, ay, az), 
 										new Point(bx, by, bz), 
-										new Point(cx, cy, cz)), currentBRDF);
+										new Point(cx, cy, cz)), currentBRDF, currentTransform);
 				//currentBRDF = new BRDF();
-				currentTransform = new Transformation();
+				//reset transform for next object...?
+				currentTransform = null;
 			}
 			else if (head.equals("ltp")) {
 				float px = Float.parseFloat(args[count++]);
@@ -175,22 +177,30 @@ public class Main {
 				float tx = Float.parseFloat(args[count++]);
 				float ty = Float.parseFloat(args[count++]);
 				float tz = Float.parseFloat(args[count++]);
+				if (currentTransform == null)
+					currentTransform = new Transformation();
 				currentTransform.translate(tx, ty, tz);
 			}
 			else if (head.equals("xfr")) {
 				float rx = Float.parseFloat(args[count++]);
 				float ry = Float.parseFloat(args[count++]);
 				float rz = Float.parseFloat(args[count++]);
+				if (currentTransform == null)
+					currentTransform = new Transformation();
 				currentTransform.rotate(rx, ry, rz);
 			}
 			else if (head.equals("xfs")) {
 				float sx = Float.parseFloat(args[count++]);
 				float sy = Float.parseFloat(args[count++]);
 				float sz = Float.parseFloat(args[count++]);
+				if (currentTransform == null)
+					currentTransform = new Transformation();
 				currentTransform.scale(sx, sy, sz);
 			}
 			else if (head.equals("xfz")) {
-				currentTransform.reset();
+				if (currentTransform != null)
+					currentTransform.reset();
+				currentTransform = null;
 			}
 			else if (head.replaceAll("\t", "").replaceAll(" ", "").isEmpty()) {
 				//only has tabs/spaces

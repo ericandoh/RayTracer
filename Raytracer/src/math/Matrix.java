@@ -88,6 +88,24 @@ public class Matrix {
 		src.z = tempVectorB[2] / tempVectorB[3];
 		return src;
 	}
+	public Vector3 multiplyTwo(Vector3 src, Vector3 a) {
+		//c_i1 = A_ij*x_j1
+		tempVectorA[0] = a.x;
+		tempVectorA[1] = a.y;
+		tempVectorA[2] = a.z;
+		tempVectorA[3] = 0;
+		
+		for (int i = 0; i < this.matrix.length; i++) {
+			tempVectorB[i] = 0;
+			for (int j = 0; j < tempVectorA.length; j++) {
+				tempVectorB[i] += this.matrix[i][j] * tempVectorA[j];
+			}
+		}
+		src.x = tempVectorB[0];
+		src.y = tempVectorB[1];
+		src.z = tempVectorB[2];
+		return src;
+	}
 	
 	public void multiply(Matrix src, Matrix b) {
 		//c_np = a_n1 b_1p + a_n2 b_2p + ... +a_nm b_mp

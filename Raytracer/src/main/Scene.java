@@ -12,6 +12,7 @@ import math.BRDF;
 import math.Ray;
 import math.Shape;
 import math.Color;
+import math.Transformation;
 import math.Vector3;
 
 public class Scene {
@@ -43,8 +44,8 @@ public class Scene {
 		world.addObjects(objs);
 	}
 	
-	public void addShape(Shape shape, BRDF bird) {
-		world.addShape(shape, bird);
+	public void addShape(Shape shape, BRDF bird, Transformation transform) {
+		world.addShape(shape, bird, transform);
 	}
 	public void defaultScene() {
 		world.defaultScene();
