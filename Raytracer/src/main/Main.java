@@ -149,6 +149,9 @@ public class Main {
 				scene.addLight(new AmbientLight(new Color(r, g, b)));
 			}
 			else if (head.equals("mat")) {
+				
+				currentBRDF = new BRDF();
+				
 				float kar = Float.parseFloat(args[count++]);
 				float kag = Float.parseFloat(args[count++]);
 				float kab = Float.parseFloat(args[count++]);
