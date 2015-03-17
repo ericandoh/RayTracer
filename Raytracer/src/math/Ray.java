@@ -24,7 +24,7 @@ public class Ray {
 		direction.normalize(origDir);
 		float dot = Vector3.normProd(origDir, norm);
 		Vector3 temp = new Vector3();
-		norm.scale(temp, dot * 2.0f * -1.0f);
+		norm.scale(temp, dot * 2.0f);
 		origDir.subtract(src.direction,  temp); // Rr = Ri - 2N(Ri dot N)
 		return src;
 	}
@@ -44,6 +44,9 @@ public class Ray {
 		System.out.println(test);
 		alongX.getPointAt(test, 3.5f);
 		System.out.println(test);
+		
+		Vector3 vec = new Vector3(0.0f, 1.0f, 0.0f);
+		
 		
 	}
 }

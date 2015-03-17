@@ -38,13 +38,17 @@ public class BRDF {
 		this.ksp = ksp;
 		this.kr = kr;
 	}
-	//phong shading algorithm goes here
-	public void addShading(Color src, Intersection intersection, Light light, Vector3 lightDir, Ray viewRay) {
+	
+	public void addAmbient(Color src, Light light) {
 		//handle ka
 		if (light.isAmbient()) {
 			src.addProduct(ka, light.color);
 			return;
 		}
+	}
+	
+	//phong shading algorithm goes here
+	public void addShading(Color src, Intersection intersection, Light light, Vector3 lightDir, Ray viewRay) {
 		//handle kd
 		//norm(l)*norm(n)
 		float ln = Vector3.normProd(lightDir, intersection.normal);

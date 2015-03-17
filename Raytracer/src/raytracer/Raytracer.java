@@ -7,7 +7,7 @@ import math.Vector3;
 
 public class Raytracer {
 	
-	public static final int MAX_DEPTH_RENDER = 1;
+	public static final int MAX_DEPTH_RENDER = 4;
 	
 	private World world;
 	
@@ -37,6 +37,12 @@ public class Raytracer {
 		Vector3 normalizedLightDirection = new Vector3();
 		Intersection isBlocked = new Intersection();
 		for (Light light: world.getLights()) {
+			
+			if (light.isAmbient()) {
+				hit.addAmbient(src, light);
+				continue;
+			}
+			
 			//make light ray
 			light.generateLightRay(lightRay, c, inter.intersection);
 			lightRay.direction.normalize(normalizedLightDirection);
@@ -55,14 +61,14 @@ public class Raytracer {
 			ray.reflect(reflectRay, norm, inter.intersection);
 			
 			//send out multiple reflected rays in a cone instead of just one
-			Vector3 ref_dir = reflectRay.direction;
+			/*Vector3 ref_dir = reflectRay.direction;
 			Vector3 perp1 = new Vector3(); //create 2 perpendicular vectors to scale
 			Vector3 perp2 = new Vector3();
 			perp1.x = -1.0f*ref_dir.z;
 			perp1.y = ref_dir.y;
 			perp1.z = ref_dir.x;
 			ref_dir.crossProd(perp2, perp1);
-			for(int i = 0; i < 4; i++) {
+			for(int i = 0; i < 16; i++) {
 				float x, y;
 				//do {
 					x = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);
@@ -80,11 +86,11 @@ public class Raytracer {
 				new_ray.direction = new_dir;
 				trace(ref, new_ray, depth + 1, hit);
 				src.addProduct(ref, hit.brdf.kr);
-			}
+			}*/
 			
-			//Color ref = new Color();
-			//trace(ref, reflectRay, depth + 1, hit);
-			//src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
+			Color ref = new Color();
+			trace(ref, reflectRay, depth + 1, hit);
+			src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
 		}
 		return src;
 	}

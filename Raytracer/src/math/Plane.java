@@ -23,7 +23,7 @@ public class Plane extends Shape {
 		ll.scale(temp11, y);
 		ul.scale(temp12, 1 - y);
 		temp11.add(temp1, temp12);
-		temp1.scale(temp1, x);
+		temp1.scale(temp1, 1 - x);
 		
 		Vector3 temp21 = new Vector3();
 		Vector3 temp22 = new Vector3();
@@ -31,7 +31,7 @@ public class Plane extends Shape {
 		lr.scale(temp21, y);
 		ur.scale(temp22, 1 - y);
 		temp21.add(temp2, temp22);
-		temp2.scale(temp2, 1 - x);
+		temp2.scale(temp2, x);
 		
 		temp2.add(temp2, temp1);
 		pt.x = temp2.x;

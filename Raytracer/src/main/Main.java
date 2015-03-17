@@ -88,7 +88,7 @@ public class Main {
 				float r = Float.parseFloat(args[count++]);
 				scene.addShape(new Ellipsoid(new Point(cx, cy, cz), r), currentBRDF);
 				//add transform to this
-				currentBRDF = new BRDF();
+				//currentBRDF = new BRDF();
 				currentTransform = new Transformation();
 			}
 			else if (head.equals("tri")) {
@@ -107,7 +107,7 @@ public class Main {
 				scene.addShape(new Triangle(new Point(ax, ay, az), 
 										new Point(bx, by, bz), 
 										new Point(cx, cy, cz)), currentBRDF);
-				currentBRDF = new BRDF();
+				//currentBRDF = new BRDF();
 				currentTransform = new Transformation();
 			}
 			else if (head.equals("ltp")) {
