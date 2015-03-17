@@ -39,6 +39,18 @@ public class Color {
 		this.b += a.b * b.b;
 		return this;
 	}
+	public Color add(Color a) {
+		this.r += a.r;
+		this.g += a.g;
+		this.b += a.b;
+		return this;
+	}
+	public Color scale(float a) {
+		this.r *= a;
+		this.g *= a;
+		this.b *= a;
+		return this;
+	}
 	public Color addProductScale(Color a, Color b, float c) {
 		this.r += (a.r * b.r) * c;
 		this.g += (a.g * b.g) * c;

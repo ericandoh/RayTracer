@@ -7,7 +7,7 @@ import math.Vector3;
 
 public class Raytracer {
 	
-	public static final int MAX_DEPTH_RENDER = 4;
+	public static final int MAX_DEPTH_RENDER = 3;
 	
 	private World world;
 	
@@ -61,21 +61,23 @@ public class Raytracer {
 			ray.reflect(reflectRay, norm, inter.intersection);
 			
 			//send out multiple reflected rays in a cone instead of just one
-			/*Vector3 ref_dir = reflectRay.direction;
+			Vector3 ref_dir = reflectRay.direction;
 			Vector3 perp1 = new Vector3(); //create 2 perpendicular vectors to scale
 			Vector3 perp2 = new Vector3();
-			perp1.x = -1.0f*ref_dir.z;
-			perp1.y = ref_dir.y;
-			perp1.z = ref_dir.x;
+			perp1.x = ref_dir.z;
+			perp1.y = 0.0f;
+			perp1.z = -1.0f*ref_dir.x;
 			ref_dir.crossProd(perp2, perp1);
-			for(int i = 0; i < 16; i++) {
+			Color avg = new Color();
+			int num = 128 / (depth + 1);
+			for(int i = 0; i < num; i++) {
 				float x, y;
-				//do {
+				do {
 					x = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);
 					y = (float)Math.random() * hit.brdf.kr.dot(hit.brdf.kr);
-				//} while((x * x + y * y) > hit.brdf.kr.dot(hit.brdf.kr));
+				} while((x * x + y * y) > hit.brdf.kr.dot(hit.brdf.kr));
 				Vector3 new_dir = new Vector3();
-				perp1.scale(perp1,  x);
+				perp1.scale(perp1, x);
 				ref_dir.add(new_dir, perp1);
 				perp2.scale(perp2, y);
 				new_dir.add(new_dir, perp2);
@@ -85,12 +87,14 @@ public class Raytracer {
 				new_ray.point = reflectRay.point;
 				new_ray.direction = new_dir;
 				trace(ref, new_ray, depth + 1, hit);
-				src.addProduct(ref, hit.brdf.kr);
-			}*/
-			
-			Color ref = new Color();
-			trace(ref, reflectRay, depth + 1, hit);
-			src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
+				avg.add(ref);
+				//src.addProduct(ref, hit.brdf.kr);
+			}
+			avg.scale(1.0f/num);
+			src.addProduct(avg, hit.brdf.kr);
+			//Color ref = new Color();
+			//trace(ref, reflectRay, depth + 1, hit);
+			//src.addProduct(ref, hit.brdf.kr); // <-- not sure if this is right
 		}
 		return src;
 	}
