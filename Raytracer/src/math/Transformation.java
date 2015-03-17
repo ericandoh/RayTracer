@@ -77,6 +77,9 @@ public class Transformation {
 	public Point applyToPoint(Point src, Point a) {
 		return this.transform.multiply(src, a);
 	}
+	public Vector3 applyToDirection(Vector3 src, Vector3 a) {
+		return this.transform.multiplyTwo(src, a);
+	}
 	
 	public void apply() {
 		//finalizes this matrix - by finding the inverse matrix!
