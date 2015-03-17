@@ -110,9 +110,36 @@ public class Matrix {
 			det += matrix[0][2] * (matrix[1][0]*matrix[2][1] - matrix[1][1]*matrix[2][0]);
 			return det;
 		}
+		else if(matrix.length == 4) {
+			float det = matrix[0][0]*matrix[1][1]*matrix[2][2]*matrix[3][3];
+			det += matrix[0][0]*matrix[1][2]*matrix[2][3]*matrix[3][1];
+			det += matrix[0][0]*matrix[1][3]*matrix[2][1]*matrix[3][2];
+			det += matrix[0][1]*matrix[1][0]*matrix[2][3]*matrix[3][2];
+			det += matrix[0][1]*matrix[1][2]*matrix[2][0]*matrix[3][3];
+			det += matrix[0][1]*matrix[1][3]*matrix[2][2]*matrix[3][0];
+			det += matrix[0][2]*matrix[1][0]*matrix[2][1]*matrix[3][3];
+			det += matrix[0][2]*matrix[1][1]*matrix[2][3]*matrix[3][0];
+			det += matrix[0][2]*matrix[1][3]*matrix[2][0]*matrix[3][1];
+			det += matrix[0][3]*matrix[1][0]*matrix[2][2]*matrix[3][1];
+			det += matrix[0][3]*matrix[1][1]*matrix[2][0]*matrix[3][2];
+			det += matrix[0][3]*matrix[1][2]*matrix[2][1]*matrix[3][0];
+			det -= matrix[0][0]*matrix[1][1]*matrix[2][3]*matrix[3][2];
+			det -= matrix[0][0]*matrix[1][2]*matrix[2][1]*matrix[3][3];
+			det -= matrix[0][0]*matrix[1][3]*matrix[2][2]*matrix[3][1];
+			det -= matrix[0][1]*matrix[1][0]*matrix[2][2]*matrix[3][3];
+			det -= matrix[0][1]*matrix[1][2]*matrix[2][3]*matrix[3][0];
+			det -= matrix[0][1]*matrix[1][3]*matrix[2][0]*matrix[3][2];
+			det -= matrix[0][2]*matrix[1][0]*matrix[2][3]*matrix[3][1];
+			det -= matrix[0][2]*matrix[1][1]*matrix[2][0]*matrix[3][3];
+			det -= matrix[0][2]*matrix[1][3]*matrix[2][1]*matrix[3][0];
+			det -= matrix[0][3]*matrix[1][0]*matrix[2][1]*matrix[3][2];
+			det -= matrix[0][3]*matrix[1][1]*matrix[2][2]*matrix[3][1];
+			det -= matrix[0][3]*matrix[1][2]*matrix[2][0]*matrix[3][1];
+			return det;
+		}
 		else {
-			System.out.println("not a 3x3 matrix");
-			return 1.0f;
+			System.out.println("not a good matrix");
+			return 0.0f;
 		}
 	}
 	
@@ -140,6 +167,13 @@ public class Matrix {
 		Matrix a = new Matrix(4);
 		a.setIdentity();
 		System.out.println(a);
+		
+		Matrix test = new Matrix(4);
+		float[][]temp = {{3f, 0f, 1f, 5f}, {2f, 0f, 1f, 4f}, {0f, 6f, 9f, 0f}, {4f, 2f, 0f, 5f}};
+		test.set(temp);
+		//test determinant()
+		System.out.println(test.determinant());
+		//should be -42
 		
 		//test matrix multiplication
 		Matrix b = new Matrix(4);
