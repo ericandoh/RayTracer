@@ -81,8 +81,18 @@ public class Transformation {
 		return this.transform.multiplyTwo(src, a);
 	}
 	
+	//applies the transformation to this point
+	public Point applyInverseToPoint(Point src, Point a) {
+		return this.transform.multiply(src, a);
+	}
+	public Vector3 applyInverseToDirection(Vector3 src, Vector3 a) {
+		return this.transform.multiplyTwo(src, a);
+	}
+	
 	public void apply() {
 		//finalizes this matrix - by finding the inverse matrix!
+		
+		//this.transform.findInverse(this.inverse)...
 		
 	}
 	public void reset() {
