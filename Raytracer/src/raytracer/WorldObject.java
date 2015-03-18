@@ -18,9 +18,6 @@ public class WorldObject {
 	public Transformation transformation;
 	
 	private Ray tempEye = new Ray();
-	private Vector3 tempNormal = new Vector3();
-	private Vector3 tempLightDir = new Vector3();
-	private Vector3 tempViewRayDir = new Vector3();
 	
 	public WorldObject(Shape shape, BRDF brdf) {
 		this.shape = shape;
@@ -43,7 +40,7 @@ public class WorldObject {
 			tempEye.tmin = eye.tmin;
 			tempEye.tmax = eye.tmax;
 			shape.getIntersection(src, tempEye);
-			this.transformation.applyToDirection(src.normal, src.normal);
+			this.transformation.applyInverseTransposeToDirection(src.normal, src.normal);
 			this.transformation.applyToPoint(src.intersection, src.intersection);
 			return src;
 		}
@@ -55,14 +52,6 @@ public class WorldObject {
 		brdf.addAmbient(src, light);
 	}
 	public void addShading(Color src, Vector3 intersectionNormal, Light light, Vector3 lightDir, Vector3 viewRayDirection) {
-		if (this.transformation != null) {
-			this.transformation.applyInverseToDirection(tempNormal, intersectionNormal);
-			this.transformation.applyInverseToDirection(tempLightDir, lightDir);
-			this.transformation.applyInverseToDirection(tempViewRayDir, viewRayDirection);
-			brdf.addShading(src, tempNormal, light, tempLightDir, tempViewRayDir);
-		}
-		else {
-			brdf.addShading(src, intersectionNormal, light, lightDir, viewRayDirection);
-		}
+		brdf.addShading(src, intersectionNormal, light, lightDir, viewRayDirection);
 	}
 }

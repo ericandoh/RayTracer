@@ -2,7 +2,7 @@ package math;
 
 public class Transformation {
 	public Matrix transform;
-	public Matrix inverse;
+	public Matrix inverse, inverseTranspose;
 	
 	private Matrix temp = new Matrix(4);
 	private Matrix temp2 = new Matrix(4);
@@ -12,13 +12,9 @@ public class Transformation {
 	public Transformation() {
 		transform = new Matrix();
 		inverse = new Matrix();
+		inverseTranspose = new Matrix();
 		transform.setIdentity();
 	}
-	public Transformation(Matrix transform, Matrix inverse) {
-		this.transform = transform;
-		this.inverse = inverse;
-	}
-	
 	public void translate(float tx, float ty, float tz) {
 		temp.setIdentity();
 		temp.matrix[0][3] = tx;
@@ -88,12 +84,15 @@ public class Transformation {
 	public Vector3 applyInverseToDirection(Vector3 src, Vector3 a) {
 		return this.inverse.multiplyTwo(src, a);
 	}
+	public Vector3 applyInverseTransposeToDirection(Vector3 src, Vector3 a) {
+		return this.inverseTranspose.multiplyTwo(src, a);
+	}
 	
 	public void apply() {
 		//finalizes this matrix - by finding the inverse matrix!
 		//this.inverse.set(this.transform.findInverse(temp));
 		this.transform.findInverse(this.inverse);
-		
+		inverse.transpose(this.inverseTranspose);
 	}
 	public void reset() {
 		transform.setIdentity();

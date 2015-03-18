@@ -52,6 +52,15 @@ public class Matrix {
 		}
 	}
 	
+	public Matrix transpose(Matrix src) {
+		for(int i = 0; i < matrix.length; i++) {
+			for(int j = 0; j < matrix[0].length; j++) {
+				src.matrix[i][j] = this.matrix[j][i];
+			}
+		}
+		return src;
+	}
+	
 	public Matrix add(Matrix src, float b) {
 		for(int i = 0; i < matrix.length; i++) {
 			for(int j = 0; j < matrix[0].length; j++) {
