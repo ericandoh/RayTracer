@@ -83,10 +83,10 @@ public class Transformation {
 	
 	//applies the transformation to this point
 	public Point applyInverseToPoint(Point src, Point a) {
-		return this.transform.multiply(src, a);
+		return this.inverse.multiply(src, a);
 	}
 	public Vector3 applyInverseToDirection(Vector3 src, Vector3 a) {
-		return this.transform.multiplyTwo(src, a);
+		return this.inverse.multiplyTwo(src, a);
 	}
 	
 	public void apply() {
