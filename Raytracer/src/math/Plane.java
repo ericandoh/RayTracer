@@ -1,6 +1,6 @@
 package math;
 
-public class Plane extends Shape {
+public class Plane {
 	public Point ul, ll, ur, lr;
 	
 	public Plane(Point ul, Point ll, Point ur, Point lr) {

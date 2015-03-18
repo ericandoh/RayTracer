@@ -8,8 +8,6 @@ public class MeshShape extends Shape {
 	
 	private Intersection temp0 = new Intersection();
 	
-	private BoundingBox box;
-	
 	private String name;
 	
 	public MeshShape() {
@@ -25,6 +23,7 @@ public class MeshShape extends Shape {
 	
 	public void addTriangle(Triangle t) {
 		triangles.add(t);
+		box.update(t);
 	}
 	public String toString() {
 		return name;
@@ -34,6 +33,9 @@ public class MeshShape extends Shape {
 	public Intersection getIntersection(Intersection src, Ray eye) {
 		
 		//AABB bounding box check here (if wanted)
+		if (!box.intersects(eye)) {
+			return src.invalidate();
+		}
 		
 		//iterate through triangles, find 
 		float minDst = Float.MAX_VALUE;

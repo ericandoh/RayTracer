@@ -33,12 +33,22 @@ import math.Vector3;
 
 public class Main {
 	
+	public static DrawPanel panel;
+	
 	public static Scene scene;
 	public static BufferedImage canvas;
+	
+	//change this to false for submission
+	public static boolean showOutput = true;
+	public static String outputFileName = "result.png";
+	
+	public static int width = 600;
+	public static int height = 600;
 	
 	public static void parseArguments(ArrayList<String> args) {
 		
 		System.out.println("We need falloofffff!!!!!! OH SHIT");
+		System.out.println("Make so we don't show a visual window when submitting");
 		
 		int count = 0;
 		String head;
@@ -56,6 +66,16 @@ public class Main {
 			if (head.equals("default")) {
 				//give scene some objects
 				scene.defaultScene();
+			}
+			else if (head.equals("out")) {
+				outputFileName = args.get(count++);
+			}
+			else if (head.equals("dim")) {
+				width = Integer.parseInt(args.get(count++));
+				height = Integer.parseInt(args.get(count++));
+			}
+			else if (head.equals("vis")) {
+				showOutput = true;
 			}
 			else if (head.equals("obj")) {
 				ArrayList<WorldObject> objects = ObjReader.readObj(args.get(count++));
@@ -248,10 +268,6 @@ public class Main {
 		
 		//read in args here
 		
-		//width, height
-		int width = 600;
-		int height = 600;
-		
 		//make a scene
 		scene = new Scene();
 		
@@ -273,24 +289,38 @@ public class Main {
 		}
 		parseArguments(arrayArgs);
 		
+		canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		
+		if (showOutput) {
+			showFrame(width, height, canvas);
+		}
 		
 		//tell scene to paint itself
-		scene.paintScene(width, height);
+		scene.paintScene(width, height, showOutput);
 		
-		canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		
 		scene.fillImage(canvas);
 		
-		showFrame(width, height, canvas);
+		//save iamge here
+	}
+	
+	public static void repaint(int x, int y, Color c) {
+		
+		canvas.setRGB(x, y, new java.awt.Color(c.r, c.g, c.b).getRGB());
+		
+		panel.repaint();
 	}
 	
 	public static void showFrame(int width, int height, BufferedImage img) {
 		JFrame frame = new JFrame();
-		final DrawPanel panel = new DrawPanel(img);
+		panel = new DrawPanel(img);
 		panel.setPreferredSize(new Dimension(width,height));
 		frame.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
+				return;
+				/*
 				if (arg0.getKeyCode() == KeyEvent.VK_W) {
 					System.out.println("W");
 					scene.cam.displace(new Vector3(0, 0, -1));
@@ -316,7 +346,7 @@ public class Main {
 				scene.repaintScene();
 				scene.fillImage(canvas);
 				panel.setImg(canvas);
-				panel.repaint();
+				panel.repaint();*/
 			}
 
 			@Override

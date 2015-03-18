@@ -5,6 +5,12 @@ package math;
  */
 
 public class Shape {
+	
+	protected BoundingBox box;
+	
+	public Shape() {
+		box = new BoundingBox();
+	}
 
 	public Intersection getIntersection(Intersection src, Ray eye) {
 		return src.invalidate();

@@ -3,6 +3,8 @@ package main;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JPanel;
+
 import raytracer.Camera;
 import raytracer.Light;
 import raytracer.Raytracer;
@@ -54,12 +56,13 @@ public class Scene {
 		world.addLight(l);
 	}
 	
-	public void paintScene(int width, int height) {
+	public void paintScene(int width, int height, boolean showOutput) {
 		
 		//draws on screen
 		this.width = width;
 		this.height = height;
 		screenColors = new Color[width][height];
+		
 		
 		for (int x = 0; x < screenColors.length; x++) {
 			for (int y = 0; y < screenColors[0].length; y++) {	
@@ -67,9 +70,9 @@ public class Scene {
 			}
 		}
 		
-		repaintScene();
+		repaintScene(showOutput);
 	}
-	public void repaintScene() {
+	public void repaintScene(boolean showOutput) {
 		//all the magic happens here
 		if (tracing) {
 			return;
@@ -85,6 +88,8 @@ public class Scene {
 				paintAtPixel(screenColors[x][y], (float)(x) / width, (float)(y) / height);
 				if (count % tenth == 0)
 					System.out.println(count / tenth * 10 + "% done");
+				if (showOutput)
+					Main.repaint(x, y, screenColors[x][y]);
 			}
 		}
 		tracing = false;

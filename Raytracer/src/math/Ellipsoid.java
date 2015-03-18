@@ -24,6 +24,9 @@ public class Ellipsoid extends Shape {
 	
 	@Override
 	public Intersection getIntersection(Intersection src, Ray eye) {
+		
+		//no need for AABB - shape is simple enough
+		
 		//(ray-C)^2=dimensions^2
 		//x^2/a^2+y^2/b^2+z^2/c^2 = 1
 		//ray is xr=x0+x1t

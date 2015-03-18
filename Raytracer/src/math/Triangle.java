@@ -26,6 +26,10 @@ public class Triangle extends Shape {
 	
 	@Override
 	public Intersection getIntersection(Intersection src, Ray eye) {
+		
+		//no need for AABB calculation...or should we?
+		//nah not worth the time
+		
 		float a = p0.x - p1.x;
 		float b = p0.y - p1.y;
 		float c = p0.z - p1.z;
