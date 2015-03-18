@@ -62,11 +62,11 @@ public class BRDF {
 		//norm(l)*norm(n)
 		Vector3 normalizedLightDir = new Vector3();
 		lightDir.normalize(normalizedLightDir);
-		float dist = lightDir.magnitude();
+		float dist = lightDir.magnitude() + 1.0f;
 		float ln = Vector3.normProd(normalizedLightDir, intersectionNormal);
 		ln = Math.max(0.0f, ln);
 		if(light instanceof PointLight) {
-			src.addProductScale(kd, light.color, ln * Math.min(1, (float)Math.pow((1.0 / dist), ((PointLight)light).falloff)));
+			src.addProductScale(kd, light.color, ln * (float)Math.pow((1.0 / dist), ((PointLight)light).falloff));
 		}
 		else {
 			src.addProductScale(kd, light.color, ln);
@@ -79,7 +79,7 @@ public class BRDF {
 		rv = Math.max(0.0f, rv);
 		rv = (float)Math.pow(rv, ksp);
 		if(light instanceof PointLight) {
-			src.addProductScale(ks, light.color, rv * Math.min(1, (float)Math.pow((1.0 / dist), ((PointLight)light).falloff)));
+			src.addProductScale(ks, light.color, rv * (float)Math.pow((1.0 / dist), ((PointLight)light).falloff));
 		}
 		else {
 			src.addProductScale(ks, light.color, rv);
