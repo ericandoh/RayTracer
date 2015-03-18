@@ -91,7 +91,7 @@ public class Transformation {
 	
 	public void apply() {
 		//finalizes this matrix - by finding the inverse matrix!
-		
+		this.inverse.set(this.transform.findInverse(temp));
 		//this.transform.findInverse(this.inverse)...
 		
 	}
@@ -112,6 +112,10 @@ public class Transformation {
 		trans.applyToPoint(ans, p);
 		System.out.println(ans);
 		
+		trans.apply();
+		System.out.println("Inverse");
+		System.out.println(trans.inverse);
+		
 		
 		trans.reset();
 		trans.scale(5, 6, 7);
@@ -119,6 +123,10 @@ public class Transformation {
 		System.out.println(trans.transform);
 		trans.applyToPoint(ans, p);
 		System.out.println(ans);
+		
+		trans.apply();
+		System.out.println("Inverse");
+		System.out.println(trans.inverse);
 		
 		trans.reset();
 		trans.rotate(45, 0, 0);

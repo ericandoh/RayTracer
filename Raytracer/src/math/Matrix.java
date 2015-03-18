@@ -30,6 +30,13 @@ public class Matrix {
 			}
 		}
 	}
+	public void set(Matrix a) {
+		for(int i = 0; i < matrix.length; i++) {
+			for(int j = 0; j < matrix[0].length; j++) {
+				this.matrix[i][j] = a.matrix[i][j];
+			}
+		}
+	}
 	public void clear() {
 		for(int i = 0; i < matrix.length; i++) {
 			for(int j = 0; j < matrix[0].length; j++) {
@@ -120,8 +127,12 @@ public class Matrix {
 		src.set(tempMatrix);
 	}
 	
-	// Determinant of 3x3 matrix
+	// Determinant of a 2x2, 3x3, or 4x4 matrix
 	public float determinant() {
+		if(matrix.length == 2) {
+			float det = matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0];
+			return det;
+		}
 		if(matrix.length == 3) {
 			float det = matrix[0][0] * (matrix[1][1]*matrix[2][2] - matrix[1][2]*matrix[2][1]);
 			det -= matrix[0][1] * (matrix[1][0]*matrix[2][2] - matrix[1][2]*matrix[2][0]);
@@ -129,36 +140,50 @@ public class Matrix {
 			return det;
 		}
 		else if(matrix.length == 4) {
-			float det = matrix[0][0]*matrix[1][1]*matrix[2][2]*matrix[3][3];
-			det += matrix[0][0]*matrix[1][2]*matrix[2][3]*matrix[3][1];
-			det += matrix[0][0]*matrix[1][3]*matrix[2][1]*matrix[3][2];
-			det += matrix[0][1]*matrix[1][0]*matrix[2][3]*matrix[3][2];
-			det += matrix[0][1]*matrix[1][2]*matrix[2][0]*matrix[3][3];
-			det += matrix[0][1]*matrix[1][3]*matrix[2][2]*matrix[3][0];
-			det += matrix[0][2]*matrix[1][0]*matrix[2][1]*matrix[3][3];
-			det += matrix[0][2]*matrix[1][1]*matrix[2][3]*matrix[3][0];
-			det += matrix[0][2]*matrix[1][3]*matrix[2][0]*matrix[3][1];
-			det += matrix[0][3]*matrix[1][0]*matrix[2][2]*matrix[3][1];
-			det += matrix[0][3]*matrix[1][1]*matrix[2][0]*matrix[3][2];
-			det += matrix[0][3]*matrix[1][2]*matrix[2][1]*matrix[3][0];
-			det -= matrix[0][0]*matrix[1][1]*matrix[2][3]*matrix[3][2];
-			det -= matrix[0][0]*matrix[1][2]*matrix[2][1]*matrix[3][3];
-			det -= matrix[0][0]*matrix[1][3]*matrix[2][2]*matrix[3][1];
-			det -= matrix[0][1]*matrix[1][0]*matrix[2][2]*matrix[3][3];
-			det -= matrix[0][1]*matrix[1][2]*matrix[2][3]*matrix[3][0];
-			det -= matrix[0][1]*matrix[1][3]*matrix[2][0]*matrix[3][2];
-			det -= matrix[0][2]*matrix[1][0]*matrix[2][3]*matrix[3][1];
-			det -= matrix[0][2]*matrix[1][1]*matrix[2][0]*matrix[3][3];
-			det -= matrix[0][2]*matrix[1][3]*matrix[2][1]*matrix[3][0];
-			det -= matrix[0][3]*matrix[1][0]*matrix[2][1]*matrix[3][2];
-			det -= matrix[0][3]*matrix[1][1]*matrix[2][2]*matrix[3][1];
-			det -= matrix[0][3]*matrix[1][2]*matrix[2][0]*matrix[3][1];
+			float det = 0;
+			for(int i = 0; i < 4; i++) {
+				det += matrix[0][i] * cofactor(0, i);
+			}
 			return det;
 		}
 		else {
 			System.out.println("not a good matrix");
 			return 0.0f;
 		}
+	}
+	
+	//assumes square matrix
+	public Matrix findInverse(Matrix src){
+		float det = determinant();
+		float[][]mat = new float[matrix.length][matrix.length];
+		for(int i = 0; i < matrix.length; i++) {
+			for(int j = 0; j < matrix.length; j++) {
+				float val = cofactor(i, j);
+				mat[j][i] = val / det;
+				if(mat[j][i] == -0.0f) {
+					mat[j][i] = 0.0f;
+				}
+				src.matrix[j][i] = mat[j][i];
+			}
+		}
+		return src;
+	}
+	
+	private float cofactor(int row, int col) {
+		int len = matrix.length;
+		int counter = 0;
+		float[][]mat = new float[len - 1][len - 1];
+		for(int i = 0; i < len; i++) {
+			for(int j = 0; j < len; j++) {
+				if(i != row && j != col) {
+					mat[counter / (len - 1)][counter % (len - 1)] = matrix[i][j];
+					counter++;
+				}
+			}
+		}
+		Matrix temp = new Matrix(mat);
+		float val = temp.determinant();
+		return (float)Math.pow(-1, (row + col)) * val;
 	}
 	
 	public String toString() {
@@ -206,5 +231,29 @@ public class Matrix {
 		System.out.println(c);
 		//should equal {{16, -3, 35, 42}, {-34, -10, 17, -11}, {20, -19, 48, 56}, {66, -33, 30, 77}}
 		
+		//test inverse matrix
+		Matrix d = new Matrix(4);
+		d.setIdentity();
+		d.matrix[0][3] = 3;
+		d.matrix[1][3] = 4;
+		d.matrix[2][3] = 5;
+		System.out.println(d.determinant());
+		Matrix e = new Matrix(4);
+		System.out.println(d.findInverse(e));
+		
+		float[][]matTest = {{5, 1, 2, 3}, {4, 6, 1, 7}, {7, 5, 3, 2}, {6, 2, 5, -1}};
+		d.set(matTest);
+		System.out.println(d.determinant());
+		System.out.println(d.findInverse(e));
+	
+		float[][]matTest3 = {{6, 9, 0, 0}, {4, 2, 0, 0}, {10, 11, 12, 13}, {15, 16, 17, 18}};
+		d.set(matTest3);
+		System.out.println(d.findInverse(e));
+		
+		Matrix s = new Matrix(3);
+		Matrix t = new Matrix(3);
+		float[][]matTest2 = {{6, 9, 0}, {4, 2, 0}, {10, 10, 11}};
+		s.set(matTest2);
+		System.out.println(s.findInverse(t));
 	}
 }
