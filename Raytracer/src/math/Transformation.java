@@ -91,8 +91,8 @@ public class Transformation {
 	
 	public void apply() {
 		//finalizes this matrix - by finding the inverse matrix!
-		this.inverse.set(this.transform.findInverse(temp));
-		//this.transform.findInverse(this.inverse)...
+		//this.inverse.set(this.transform.findInverse(temp));
+		this.transform.findInverse(this.inverse);
 		
 	}
 	public void reset() {

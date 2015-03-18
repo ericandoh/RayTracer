@@ -38,14 +38,14 @@ public class WorldObject {
 	public Intersection getIntersection(Intersection src, Ray eye) {
 		if (this.transformation != null) {
 			//transform eye ray by inverse transform
-			this.transformation.applyToDirection(tempEye.direction, eye.direction);
-			this.transformation.applyToPoint(tempEye.point, eye.point);
+			this.transformation.applyInverseToDirection(tempEye.direction, eye.direction);
+			this.transformation.applyInverseToPoint(tempEye.point, eye.point);
 			tempEye.tmin = eye.tmin;
 			tempEye.tmax = eye.tmax;
-			Intersection result = shape.getIntersection(src, tempEye);
-			this.transformation.applyInverseToDirection(result.normal, result.normal);
-			this.transformation.applyInverseToPoint(result.intersection, result.intersection);
-			return result;
+			shape.getIntersection(src, tempEye);
+			this.transformation.applyToDirection(src.normal, src.normal);
+			this.transformation.applyToPoint(src.intersection, src.intersection);
+			return src;
 		}
 		else {
 			return shape.getIntersection(src, eye);
