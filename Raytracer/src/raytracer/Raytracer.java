@@ -7,7 +7,7 @@ import math.Vector3;
 
 public class Raytracer {
 	
-	public static final int MAX_DEPTH_RENDER = 3;
+	public static final int MAX_DEPTH_RENDER = 4;
 	
 	private World world;
 	
@@ -70,7 +70,7 @@ public class Raytracer {
 			perp1.z = -1.0f*ref_dir.x;
 			ref_dir.crossProd(perp2, perp1);
 			Color avg = new Color();
-			int num = 128 / (depth + 1);
+			int num = 64 / (depth + 1);
 			for(int i = 0; i < num; i++) {
 				float x, y;
 				do {

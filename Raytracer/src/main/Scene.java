@@ -91,8 +91,20 @@ public class Scene {
 	}
 	
 	public Color paintAtPixel(Color src, float x, float y) {
-		cam.generateRay(tempRay, x, y);
-		rayTracer.trace(src, tempRay, 0, null);
+		//anti-aliasing through supersampling
+		int rays = 9; //ideally the square of an odd number
+		int start = -1*(int)Math.sqrt(rays) / 2;
+		int end = (int)Math.sqrt(rays) / 2;
+		int offset = (int)Math.sqrt(rays);
+		for(int i = start; i <= end; i++) {
+			for(int j = start; j <= end; j++) {
+				cam.generateRay(tempRay, x + ((float)i)/(offset * width), y + ((float)j)/(offset * height));
+				Color temp = new Color();
+				rayTracer.trace(temp, tempRay, 0, null);
+				src.add(temp);
+			}
+		}
+		src.scale(1.0f/rays);
 		src.validate();
 		return src;
 	}
