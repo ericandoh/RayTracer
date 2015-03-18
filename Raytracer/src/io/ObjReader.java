@@ -13,6 +13,7 @@ import math.BRDF;
 import math.MeshShape;
 import math.Point;
 import math.Triangle;
+import math.Vector3;
 
 public class ObjReader {
 	
@@ -45,6 +46,10 @@ public class ObjReader {
 	
 	public static ArrayList<WorldObject> readObj(String fileName) {
 		ArrayList<Point> vertices = new ArrayList<Point>();
+		
+		ArrayList<Vector3> vertexNormals = new ArrayList<Vector3>();
+		ArrayList<Vector3> textureCoords = new ArrayList<Vector3>();
+		
 		ArrayList<MeshShape> meshes = new ArrayList<MeshShape>();
 		ArrayList<WorldObject> wobjs = new ArrayList<WorldObject>();
 		HashMap<String, BRDF> matLst = new HashMap<String, BRDF>();
@@ -63,7 +68,7 @@ public class ObjReader {
 			BufferedReader mapReader = new BufferedReader(new FileReader(objFile));
 			String line;
 			while ((line = mapReader.readLine()) != null) {
-				processObjLine(line, vertices, meshes, matLst, wobjs);
+				processObjLine(line, vertices, vertexNormals, textureCoords, meshes, matLst, wobjs);
 			}
 			mapReader.close();
 		} catch (FileNotFoundException e) {
@@ -80,6 +85,8 @@ public class ObjReader {
 	
 	public static void processObjLine(String line, 
 			ArrayList<Point> vertices, 
+			ArrayList<Vector3> vertexNormals, 
+			ArrayList<Vector3> textureCoords, 
 			ArrayList<MeshShape> meshes,
 			HashMap<String, BRDF> matLst,
 			ArrayList<WorldObject> wobjs) throws MalformedObjFileException {
@@ -108,6 +115,26 @@ public class ObjReader {
 				shape = new MeshShape(parts[1]);
 			meshes.add(0, shape);
 			wobjs.add(0, new WorldObject(shape, null));*/
+		}
+		else if (starter.equals("vn")) {
+			//vertex normal
+			if (parts.length < 4)
+				throw new MalformedObjFileException("Need 3 points for vertex normal");
+			Vector3 p = new Vector3(Float.parseFloat(parts[1]), 
+					Float.parseFloat(parts[2]), Float.parseFloat(parts[3]));
+			vertexNormals.add(p);
+		}
+		else if (starter.equals("vt")) {
+			//vertex normal
+			if (parts.length < 3)
+				throw new MalformedObjFileException("Need 3 points for vertex normal");
+			Vector3 p = new Vector3(Float.parseFloat(parts[1]), 
+					Float.parseFloat(parts[2]), 0);
+			if (parts.length == 4) {
+				//w coordinate...?
+				p.z = Float.parseFloat(parts[3]);
+			}
+			textureCoords.add(p);
 		}
 		else if (starter.equals("v")) {
 			if (parts.length < 4)
@@ -144,28 +171,42 @@ public class ObjReader {
 				wobjs.add(0, new WorldObject(shape, null));
 			}
 			
-			if (parts.length == 4) {
-				//triangle
-				Point p0 = vertices.get(Integer.parseInt(parts[1]) - 1);
-				Point p1 = vertices.get(Integer.parseInt(parts[2]) - 1);
-				Point p2 = vertices.get(Integer.parseInt(parts[3]) - 1);
-				Triangle t = new Triangle(p0, p1, p2);
-				meshes.get(0).addTriangle(t);
-			}
-			else if (parts.length == 5) {
-				//quad
-				Point p0 = vertices.get(Integer.parseInt(parts[1]) - 1);
-				Point p1 = vertices.get(Integer.parseInt(parts[2]) - 1);
-				Point p2 = vertices.get(Integer.parseInt(parts[3]) - 1);
-				Point p3 = vertices.get(Integer.parseInt(parts[4]) - 1);
-				Triangle t0 = new Triangle(p0, p1, p2);
-				Triangle t1 = new Triangle(p2, p3, p0);
-				meshes.get(0).addTriangle(t0);
-				meshes.get(0).addTriangle(t1);
+			if (parts.length != 4)
+				throw new MalformedObjFileException("Faces specified by more than 3 points not supported");
+			
+			String[] vdata0 = parts[1].split("/");
+			String[] vdata1 = parts[2].split("/");
+			String[] vdata2 = parts[3].split("/");
+			
+			boolean hasVNormals = vdata0.length > 2 && vdata1.length > 2 && vdata2.length > 2;
+			boolean hasTexture = vdata0.length > 1 && vdata1.length > 1 && vdata1.length > 1
+								&& !(vdata0[1].isEmpty())
+								&& !(vdata1[1].isEmpty())
+								&& !(vdata2[1].isEmpty());
+			
+			
+			//triangle
+			Point p0 = vertices.get(Integer.parseInt(vdata0[0]) - 1);
+			Point p1 = vertices.get(Integer.parseInt(vdata1[0]) - 1);
+			Point p2 = vertices.get(Integer.parseInt(vdata2[0]) - 1);
+			
+			Triangle t;
+			if (hasVNormals) {
+				Vector3 vn0 = vertexNormals.get(Integer.parseInt(vdata0[2]) - 1);
+				Vector3 vn1 = vertexNormals.get(Integer.parseInt(vdata1[2]) - 1);
+				Vector3 vn2 = vertexNormals.get(Integer.parseInt(vdata2[2]) - 1);
+				t = new Triangle(p0, p1, p2, vn0, vn1, vn2);
 			}
 			else {
-				throw new MalformedObjFileException("Faces specified by more than 4 points not supported");
+				t = new Triangle(p0, p1, p2);
 			}
+			if (hasTexture) {
+				Vector3 vt0 = textureCoords.get(Integer.parseInt(vdata0[1]) - 1);
+				Vector3 vt1 = textureCoords.get(Integer.parseInt(vdata1[1]) - 1);
+				Vector3 vt2 = textureCoords.get(Integer.parseInt(vdata2[1]) - 1);
+				t.addTextureCoordinates(vt0, vt1, vt2);
+			}
+			meshes.get(0).addTriangle(t);
 		}
 		else {
 			//unknown - just skip

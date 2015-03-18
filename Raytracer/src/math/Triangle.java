@@ -1,11 +1,21 @@
 package math;
 
+import main.Main;
+
 public class Triangle extends Shape {
 	
 	public Point p0;
 	public Point p1;
 	public Point p2;
 	public Vector3 normal;
+	
+	public Vector3 p1p0, p2p0;
+	
+	//temp
+	public Vector3 ppp0 = new Vector3();
+	
+	public boolean singleNormal;
+	public Vector3 normal0, normal1, normal2;
 	
 	public Triangle(Point p0, Point p1, Point p2) {
 		//three points define a triangle
@@ -16,12 +26,47 @@ public class Triangle extends Shape {
 		this.p0.set(p0);
 		this.p1.set(p1);
 		this.p2.set(p2);
-		Vector3 p1p0 = new Vector3();
-		Vector3 p2p0 = new Vector3();
+		p1p0 = new Vector3();
+		p2p0 = new Vector3();
 		p1.subtract(p1p0, p0);
 		p2.subtract(p2p0, p0);
 		p1p0.crossProd(this.normal, p2p0);
 		this.normal.normalize(this.normal);
+		this.singleNormal = true;
+	}
+	public Triangle(Point p0, Point p1, Point p2, Vector3 vn0, Vector3 vn1, Vector3 vn2) {
+		this.p0 = new Point();
+		this.p1 = new Point();
+		this.p2 = new Point();
+		normal = new Vector3();
+		this.p0.set(p0);
+		this.p1.set(p1);
+		this.p2.set(p2);
+		
+		p1p0 = new Vector3();
+		p2p0 = new Vector3();
+		p1.subtract(p1p0, p0);
+		p2.subtract(p2p0, p0);
+		
+		//for now average vn's
+		normal.add(normal, vn0);
+		normal.add(normal, vn1);
+		normal.add(normal, vn2);
+		normal.scale(normal, 1.0f/3.0f);
+		
+		this.singleNormal = false;
+		this.normal0 = new Vector3();
+		this.normal1 = new Vector3();
+		this.normal2 = new Vector3();
+		this.normal0.set(vn0);
+		this.normal1.set(vn1);
+		this.normal2.set(vn2);
+		this.normal0.normalize(this.normal0);
+		this.normal1.normalize(this.normal1);
+		this.normal2.normalize(this.normal2);
+	}
+	public void addTextureCoordinates(Vector3 vt0, Vector3 vt1, Vector3 vt2) {
+		//handle texture coordinates
 	}
 	
 	@Override
@@ -61,7 +106,33 @@ public class Triangle extends Shape {
 		else {
 			eye.getPointAt(src.intersection, t);
 			src.intersects = true;
-			src.normal.set(this.normal);
+			
+			if (singleNormal || Main.simpleShading) {
+				src.normal.set(this.normal);
+			}
+			else {
+				//find barycentric coords
+				
+				//sauce: http://gamedev.stackexchange.com/questions/23743/whats-the-most-efficient-way-to-find-barycentric-coordinates
+				
+				src.intersection.subtract(ppp0, p0);
+				float d00 = Vector3.dot(p1p0, p1p0);
+				float d01 = Vector3.dot(p1p0, p2p0);
+				float d11 = Vector3.dot(p2p0, p2p0);
+				float d20 = Vector3.dot(ppp0, p1p0);
+				float d21 = Vector3.dot(ppp0, p2p0);
+				float denom = d00 * d11 - d01 * d01;
+				
+				float l2 = (d11*d20 - d01*d21) / denom;
+				float l3 = (d00*d21 - d01*d20)/ denom;
+				float l1 = 1 - l2 - l3;
+				src.normal.set(0, 0, 0);
+				src.normal.addScaled(normal0, l1);
+				src.normal.addScaled(normal1, l2);
+				src.normal.addScaled(normal2, l3);
+				src.normal.normalize(src.normal);
+				
+			}
 			src.t = t;
 			return src;
 		}

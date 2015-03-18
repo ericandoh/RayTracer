@@ -36,6 +36,13 @@ public class Vector3 {
 		return src;
 	}
 	
+	public Vector3 addScaled(Vector3 second, float scale) {
+		this.x += (second.x * scale);
+		this.y += (second.y * scale);
+		this.z += (second.z * scale);
+		return this;
+	}
+	
 	public Vector3 subtract(Vector3 src, Vector3 second) {
 		src.x = this.x - second.x;
 		src.y = this.y - second.y;
@@ -94,6 +101,9 @@ public class Vector3 {
 		float normA = a.magnitude();
 		float normB = b.magnitude();		
 		return (a.x*b.x + a.y*b.y + a.z*b.z) / (normA * normB);
+	}
+	public static float dot(Vector3 a, Vector3 b) {
+		return (a.x*b.x + a.y*b.y + a.z*b.z);
 	}
 	
 	public static void main(String[] args) {

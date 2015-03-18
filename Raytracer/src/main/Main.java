@@ -40,6 +40,10 @@ public class Main {
 	public static Scene scene;
 	public static BufferedImage canvas;
 	
+	//whether to interpolate vertex normals (if specified)
+	//if false, use Goraud shading
+	public static boolean simpleShading = false;
+	
 	//change this to false for submission
 	public static boolean showOutput = true;
 	public static String outputFileName = "result.png";
