@@ -13,8 +13,6 @@ public class DirectionalLight extends Light {
 		super(color);
 		this.pos = pos;
 		this.pos.normalize(this.pos);
-		System.out.println("find point at infinity from where this light comes from");
-		
 	}
 	
 	@Override

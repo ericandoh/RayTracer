@@ -9,6 +9,11 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +21,7 @@ import javax.swing.JPanel;
 import raytracer.AmbientLight;
 import raytracer.DirectionalLight;
 import raytracer.PointLight;
+import raytracer.WorldObject;
 import math.BRDF;
 import math.Color;
 import math.Ellipsoid;
@@ -29,51 +35,66 @@ public class Main {
 	public static Scene scene;
 	public static BufferedImage canvas;
 	
-	public static void main(String[] args) {
+	public static void parseArguments(ArrayList<String> args) {
 		
-		//read in args here
-		
-		//width, height
-		int width = 600;
-		int height = 600;
-		
-		//make a scene
-		scene = new Scene();
+		System.out.println("We need falloofffff!!!!!! OH SHIT");
 		
 		int count = 0;
 		String head;
 		BRDF currentBRDF = new BRDF();
+		//treat null transformation as identity 
+		//(so we don't have to do multiplying by identity matrix in calculations)
 		Transformation currentTransform = null;
-		while(count < args.length) {
-			head = args[count++];
+		while(count < args.size()) {
+			head = args.get(count++);
+			
+			if (head.startsWith("-")) {
+				head = head.substring(1);
+			}
+			
 			if (head.equals("default")) {
 				//give scene some objects
 				scene.defaultScene();
 			}
 			else if (head.equals("obj")) {
-				scene.addObjects(ObjReader.readObj(args[count++]));
+				ArrayList<WorldObject> objects = ObjReader.readObj(args.get(count++));
+				Collections.reverse(objects);
+				
+				if (currentTransform != null) {
+					for (WorldObject obj: objects) {
+						obj.setTransformation(currentTransform);
+						currentTransform = Transformation.copyTransform(currentTransform);
+					}
+				}
+				
+				if (objects.size() > 0 && objects.get(objects.size() - 1).brdf == null) {
+					//copy BRDF/transforms for use in next object
+					objects.get(objects.size() - 1).brdf = currentBRDF;
+					currentBRDF = new BRDF(currentBRDF);
+				}
+				scene.addObjects(objects);
 			}
 			else if (head.equals("cam")) {
 				//set up camera
-				float ex = Float.parseFloat(args[count++]);
-				float ey = Float.parseFloat(args[count++]);
-				float ez = Float.parseFloat(args[count++]);
+				float ex = Float.parseFloat(args.get(count++));
+				float ey = Float.parseFloat(args.get(count++));
+				float ez = Float.parseFloat(args.get(count++));
 				
-				float llx = Float.parseFloat(args[count++]);
-				float lly = Float.parseFloat(args[count++]);
-				float llz = Float.parseFloat(args[count++]);
+				float llx = Float.parseFloat(args.get(count++));
+				float lly = Float.parseFloat(args.get(count++));
+				float llz = Float.parseFloat(args.get(count++));
 				
-				float lrx = Float.parseFloat(args[count++]);
-				float lry = Float.parseFloat(args[count++]);
-				float lrz = Float.parseFloat(args[count++]);
+				float lrx = Float.parseFloat(args.get(count++));
+				float lry = Float.parseFloat(args.get(count++));
+				float lrz = Float.parseFloat(args.get(count++));
 				
-				float ulx = Float.parseFloat(args[count++]);
-				float uly = Float.parseFloat(args[count++]);
-				float ulz = Float.parseFloat(args[count++]);
+				float ulx = Float.parseFloat(args.get(count++));
+				float uly = Float.parseFloat(args.get(count++));
+				float ulz = Float.parseFloat(args.get(count++));
 				
-				float urx = Float.parseFloat(args[count++]);
-				float ury = Float.parseFloat(args[count++]);
-				float urz = Float.parseFloat(args[count++]);
+				float urx = Float.parseFloat(args.get(count++));
+				float ury = Float.parseFloat(args.get(count++));
+				float urz = Float.parseFloat(args.get(count++));
 				
 				scene.cam.setCenter(new Point(ex, ey, ez));
 				scene.cam.setImagePlaneCorners(new Point(llx, lly, llz), 
@@ -82,69 +103,68 @@ public class Main {
 									new Point(urx, ury, urz));
 			}
 			else if (head.equals("sph")) {
-				float cx = Float.parseFloat(args[count++]);
-				float cy = Float.parseFloat(args[count++]);
-				float cz = Float.parseFloat(args[count++]);
-				float r = Float.parseFloat(args[count++]);
+				float cx = Float.parseFloat(args.get(count++));
+				float cy = Float.parseFloat(args.get(count++));
+				float cz = Float.parseFloat(args.get(count++));
+				float r = Float.parseFloat(args.get(count++));
 				scene.addShape(new Ellipsoid(new Point(cx, cy, cz), r), currentBRDF, currentTransform);
-				//add transform to this
-				//currentBRDF = new BRDF();
-				//reset transform for next object...?
-				currentTransform = null;
+				//copy BRDF/transforms for use in next object
+				currentBRDF = new BRDF(currentBRDF);
+				currentTransform = Transformation.copyTransform(currentTransform);
 			}
 			else if (head.equals("tri")) {
-				float ax = Float.parseFloat(args[count++]);
-				float ay = Float.parseFloat(args[count++]);
-				float az = Float.parseFloat(args[count++]);
+				float ax = Float.parseFloat(args.get(count++));
+				float ay = Float.parseFloat(args.get(count++));
+				float az = Float.parseFloat(args.get(count++));
 				
-				float bx = Float.parseFloat(args[count++]);
-				float by = Float.parseFloat(args[count++]);
-				float bz = Float.parseFloat(args[count++]);
+				float bx = Float.parseFloat(args.get(count++));
+				float by = Float.parseFloat(args.get(count++));
+				float bz = Float.parseFloat(args.get(count++));
 				
-				float cx = Float.parseFloat(args[count++]);
-				float cy = Float.parseFloat(args[count++]);
-				float cz = Float.parseFloat(args[count++]);
+				float cx = Float.parseFloat(args.get(count++));
+				float cy = Float.parseFloat(args.get(count++));
+				float cz = Float.parseFloat(args.get(count++));
 				
 				scene.addShape(new Triangle(new Point(ax, ay, az), 
 										new Point(bx, by, bz), 
 										new Point(cx, cy, cz)), currentBRDF, currentTransform);
-				//currentBRDF = new BRDF();
-				//reset transform for next object...?
-				currentTransform = null;
+				//copy BRDF/transforms for use in next object
+				currentBRDF = new BRDF(currentBRDF);
+				currentTransform = Transformation.copyTransform(currentTransform);
 			}
 			else if (head.equals("ltp")) {
-				float px = Float.parseFloat(args[count++]);
-				float py = Float.parseFloat(args[count++]);
-				float pz = Float.parseFloat(args[count++]);
+				float px = Float.parseFloat(args.get(count++));
+				float py = Float.parseFloat(args.get(count++));
+				float pz = Float.parseFloat(args.get(count++));
 				
-				float r = Float.parseFloat(args[count++]);
-				float g = Float.parseFloat(args[count++]);
-				float b = Float.parseFloat(args[count++]);
+				float r = Float.parseFloat(args.get(count++));
+				float g = Float.parseFloat(args.get(count++));
+				float b = Float.parseFloat(args.get(count++));
 				
-				if (args[count].equals("0") 
-						|| args[count].equals("1") 
-						|| args[count].equals("2")) {
+				if (args.get(count).equals("0") 
+						|| args.get(count).equals("1") 
+						|| args.get(count).equals("2")) {
 					//we have a falloff specified
-					float falloff = Float.parseFloat(args[count++]);
+					float falloff = Float.parseFloat(args.get(count++));
 				}
 				System.out.println("Add support for falloff");
 				scene.addLight(new PointLight(new Vector3(px, py, pz), new Color(r, g, b)));
 			}
 			else if (head.equals("ltd")) {
-				float dx = Float.parseFloat(args[count++]);
-				float dy = Float.parseFloat(args[count++]);
-				float dz = Float.parseFloat(args[count++]);
+				float dx = Float.parseFloat(args.get(count++));
+				float dy = Float.parseFloat(args.get(count++));
+				float dz = Float.parseFloat(args.get(count++));
 				
-				float r = Float.parseFloat(args[count++]);
-				float g = Float.parseFloat(args[count++]);
-				float b = Float.parseFloat(args[count++]);
+				float r = Float.parseFloat(args.get(count++));
+				float g = Float.parseFloat(args.get(count++));
+				float b = Float.parseFloat(args.get(count++));
 				
 				scene.addLight(new DirectionalLight(new Vector3(dx, dy, dz), new Color(r, g, b)));
 			}
 			else if (head.equals("lta")) {
-				float r = Float.parseFloat(args[count++]);
-				float g = Float.parseFloat(args[count++]);
-				float b = Float.parseFloat(args[count++]);
+				float r = Float.parseFloat(args.get(count++));
+				float g = Float.parseFloat(args.get(count++));
+				float b = Float.parseFloat(args.get(count++));
 				
 				scene.addLight(new AmbientLight(new Color(r, g, b)));
 			}
@@ -152,23 +172,23 @@ public class Main {
 				
 				currentBRDF = new BRDF();
 				
-				float kar = Float.parseFloat(args[count++]);
-				float kag = Float.parseFloat(args[count++]);
-				float kab = Float.parseFloat(args[count++]);
+				float kar = Float.parseFloat(args.get(count++));
+				float kag = Float.parseFloat(args.get(count++));
+				float kab = Float.parseFloat(args.get(count++));
 				
-				float kdr = Float.parseFloat(args[count++]);
-				float kdg = Float.parseFloat(args[count++]);
-				float kdb = Float.parseFloat(args[count++]);
+				float kdr = Float.parseFloat(args.get(count++));
+				float kdg = Float.parseFloat(args.get(count++));
+				float kdb = Float.parseFloat(args.get(count++));
 				
-				float ksr = Float.parseFloat(args[count++]);
-				float ksg = Float.parseFloat(args[count++]);
-				float ksb = Float.parseFloat(args[count++]);
+				float ksr = Float.parseFloat(args.get(count++));
+				float ksg = Float.parseFloat(args.get(count++));
+				float ksb = Float.parseFloat(args.get(count++));
 				
-				float ksp = Float.parseFloat(args[count++]);
+				float ksp = Float.parseFloat(args.get(count++));
 				
-				float krr = Float.parseFloat(args[count++]);
-				float krg = Float.parseFloat(args[count++]);
-				float krb = Float.parseFloat(args[count++]);
+				float krr = Float.parseFloat(args.get(count++));
+				float krg = Float.parseFloat(args.get(count++));
+				float krb = Float.parseFloat(args.get(count++));
 				
 				currentBRDF.ka.set(kar, kag, kab);
 				currentBRDF.kd.set(kdr, kdg, kdb);
@@ -177,25 +197,25 @@ public class Main {
 				currentBRDF.kr.set(krr, krg, krb);
 			}
 			else if (head.equals("xft")) {
-				float tx = Float.parseFloat(args[count++]);
-				float ty = Float.parseFloat(args[count++]);
-				float tz = Float.parseFloat(args[count++]);
+				float tx = Float.parseFloat(args.get(count++));
+				float ty = Float.parseFloat(args.get(count++));
+				float tz = Float.parseFloat(args.get(count++));
 				if (currentTransform == null)
 					currentTransform = new Transformation();
 				currentTransform.translate(tx, ty, tz);
 			}
 			else if (head.equals("xfr")) {
-				float rx = Float.parseFloat(args[count++]);
-				float ry = Float.parseFloat(args[count++]);
-				float rz = Float.parseFloat(args[count++]);
+				float rx = Float.parseFloat(args.get(count++));
+				float ry = Float.parseFloat(args.get(count++));
+				float rz = Float.parseFloat(args.get(count++));
 				if (currentTransform == null)
 					currentTransform = new Transformation();
 				currentTransform.rotate(rx, ry, rz);
 			}
 			else if (head.equals("xfs")) {
-				float sx = Float.parseFloat(args[count++]);
-				float sy = Float.parseFloat(args[count++]);
-				float sz = Float.parseFloat(args[count++]);
+				float sx = Float.parseFloat(args.get(count++));
+				float sy = Float.parseFloat(args.get(count++));
+				float sz = Float.parseFloat(args.get(count++));
 				if (currentTransform == null)
 					currentTransform = new Transformation();
 				currentTransform.scale(sx, sy, sz);
@@ -213,7 +233,36 @@ public class Main {
 				System.err.println("Unknown input: " + head);
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
 		
+		//read in args here
+		
+		//width, height
+		int width = 600;
+		int height = 600;
+		
+		//make a scene
+		scene = new Scene();
+		
+		ArrayList<String> arrayArgs;
+		
+		if (args.length == 1) {
+			//only one argument - assume its a file name and try reading from it
+			//read in file containing objects - if file not found do regular reading
+			try {
+				arrayArgs = ObjReader.readFile(args[0]);
+			} catch (FileNotFoundException e) {
+				arrayArgs = new ArrayList<String>(Arrays.asList(args));
+			} catch (IOException e) {
+				arrayArgs = new ArrayList<String>(Arrays.asList(args));
+			}
+		}
+		else {
+			arrayArgs = new ArrayList<String>(Arrays.asList(args));
+		}
+		parseArguments(arrayArgs);
 		
 		
 		//tell scene to paint itself

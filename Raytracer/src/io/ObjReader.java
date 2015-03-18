@@ -16,6 +16,32 @@ import math.Triangle;
 
 public class ObjReader {
 	
+	//generic reader for a file
+	//parsing of this file (scene file for CS184 only) is handled in Main.java
+	public static ArrayList<String> readFile(String fileName) 
+			throws FileNotFoundException, IOException {
+		ArrayList<String> contents = new ArrayList<String>();
+		
+		File file = new File(System.getProperty("user.dir") + "/" + fileName);
+		
+		if (!file.exists()) {
+			System.out.println(fileName + " does not exist at path "+file.getAbsolutePath());
+			return contents;
+		}
+		
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			String[] args = line.split(" ");
+			for (String arg : args) {
+				contents.add(arg);
+			}
+		}
+		reader.close();
+		
+		return contents;
+	}
+	
 	public static ArrayList<WorldObject> readObj(String fileName) {
 		ArrayList<Point> vertices = new ArrayList<Point>();
 		ArrayList<MeshShape> meshes = new ArrayList<MeshShape>();

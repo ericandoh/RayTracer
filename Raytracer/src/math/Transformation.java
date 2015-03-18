@@ -15,6 +15,20 @@ public class Transformation {
 		inverseTranspose = new Matrix();
 		transform.setIdentity();
 	}
+	
+	public Transformation(Transformation other) {
+		this();
+		this.transform.set(other.transform);
+		this.inverse.set(other.inverse);
+		this.inverseTranspose.set(other.inverseTranspose);
+	}
+	
+	public static Transformation copyTransform(Transformation other) {
+		if (other == null)
+			return null;
+		return new Transformation(other);
+	}
+	
 	public void translate(float tx, float ty, float tz) {
 		temp.setIdentity();
 		temp.matrix[0][3] = tx;

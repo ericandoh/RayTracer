@@ -38,6 +38,14 @@ public class BRDF {
 		this.ksp = ksp;
 		this.kr = kr;
 	}
+	public BRDF(BRDF other) {
+		this();
+		this.ka.set(other.ka);
+		this.kd.set(other.kd);
+		this.ks.set(other.ks);
+		this.ksp = other.ksp;
+		this.kr.set(other.kr);
+	}
 	
 	public void addAmbient(Color src, Light light) {
 		//handle ka
