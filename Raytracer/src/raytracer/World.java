@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import math.BRDF;
 import math.Color;
 import math.Intersection;
+import math.Point;
 import math.Ray;
 import math.Shape;
 import math.Transformation;
@@ -65,8 +66,8 @@ public class World {
 		*/
 		
 		
-		this.addLight(new PointLight(new Vector3(5, 5, 10), Color.WHITE));
-		this.addLight(new PointLight(new Vector3(-5, -5, -5), Color.BLUE));
+		this.addLight(new PointLight(new Point(5, 5, 10), Color.WHITE));
+		this.addLight(new PointLight(new Point(-5, -5, -5), Color.BLUE));
 		this.addLight(new DirectionalLight(new Vector3(1, -5, -5), Color.WHITE));
 	}
 	

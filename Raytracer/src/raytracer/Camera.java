@@ -3,6 +3,7 @@ package raytracer;
 import math.Plane;
 import math.Point;
 import math.Ray;
+import math.Transformation;
 import math.Vector3;
 
 public class Camera {
@@ -17,6 +18,19 @@ public class Camera {
 		
 		//lookAt(Point.ORIGIN);
 		lookAt(new Point(0, 2, 0));
+	}
+	
+	public void setTransformation(Transformation x) {
+		if (x == null)
+			return;
+		//tell this transformation to calculate its inverse once and just once
+		x.apply();
+		
+		x.applyToPoint(cameraCenter, cameraCenter);
+		x.applyToPoint(imagePlane.ll, imagePlane.ll);
+		x.applyToPoint(imagePlane.lr, imagePlane.lr);
+		x.applyToPoint(imagePlane.ul, imagePlane.ul);
+		x.applyToPoint(imagePlane.ur, imagePlane.ur);
 	}
 	
 	public void displace(Vector3 step) {

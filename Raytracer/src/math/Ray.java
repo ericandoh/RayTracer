@@ -45,7 +45,7 @@ public class Ray {
 		alongX.getPointAt(test, 3.5f);
 		System.out.println(test);
 		
-		Vector3 vec = new Vector3(0.0f, 1.0f, 0.0f);
+		//Vector3 vec = new Vector3(0.0f, 1.0f, 0.0f);
 		
 		
 	}

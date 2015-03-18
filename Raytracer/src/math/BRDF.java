@@ -89,7 +89,7 @@ public class BRDF {
 		//normal straight up
 		inter.normal = new Vector3(0.0f, 1.0f, 0.0f);
 		//only the light color used here
-		Light light = new PointLight(new Vector3(1.0f, 1.0f, 1.0f), Color.WHITE);
+		Light light = new PointLight(new Point(1.0f, 1.0f, 1.0f), Color.WHITE);
 		//light ray is from surface => light
 		//light ray straight up in y direction
 		Vector3 lightRay = new Vector3(0.0f, 1.0f, 0.0f);
@@ -118,7 +118,7 @@ public class BRDF {
 		model.addShading(result, inter.normal, light, lightRay, viewRay.direction);
 		System.out.println("Diffuse, Tilted Light Extreme: " + result);
 		//colored light on colored object
-		light = new PointLight(new Vector3(1.0f, 1.0f, 1.0f), new Color(0.5f, 0.4f, 0.3f));
+		light = new PointLight(new Point(1.0f, 1.0f, 1.0f), new Color(0.5f, 0.4f, 0.3f));
 		lightRay = new Vector3(1.0f, 1.0f, 0.0f);
 		model = new BRDF(new Color(0.5f, 0.6f, 0.7f), Color.BLACK, Color.BLACK, 1.0f, Color.BLACK);
 		result.setBlack();

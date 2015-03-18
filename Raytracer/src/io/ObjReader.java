@@ -134,6 +134,17 @@ public class ObjReader {
 			}
 		}
 		else if (starter.equals("f")) {
+			
+			if (meshes.size() == 0) {
+				MeshShape shape;
+				if (parts.length < 2)
+					shape = new MeshShape();
+				else
+					shape = new MeshShape(parts[1]);
+				meshes.add(0, shape);
+				wobjs.add(0, new WorldObject(shape, null));
+			}
+			
 			if (parts.length == 4) {
 				//triangle
 				Point p0 = vertices.get(Integer.parseInt(parts[1]) - 1);

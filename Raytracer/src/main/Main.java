@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import raytracer.AmbientLight;
 import raytracer.DirectionalLight;
+import raytracer.Light;
 import raytracer.PointLight;
 import raytracer.WorldObject;
 import math.BRDF;
@@ -101,6 +102,9 @@ public class Main {
 									new Point(lrx, lry, lrz), 
 									new Point(ulx, uly, ulz), 
 									new Point(urx, ury, urz));
+				
+				scene.cam.setTransformation(currentTransform);
+				currentTransform = Transformation.copyTransform(currentTransform);
 			}
 			else if (head.equals("sph")) {
 				float cx = Float.parseFloat(args.get(count++));
@@ -148,7 +152,10 @@ public class Main {
 					float falloff = Float.parseFloat(args.get(count++));
 				}
 				System.out.println("Add support for falloff");
-				scene.addLight(new PointLight(new Vector3(px, py, pz), new Color(r, g, b)));
+				Light light = new PointLight(new Point(px, py, pz), new Color(r, g, b));
+				light.setTransformation(currentTransform);
+				scene.addLight(light);
+				currentTransform = Transformation.copyTransform(currentTransform);
 			}
 			else if (head.equals("ltd")) {
 				float dx = Float.parseFloat(args.get(count++));
@@ -158,8 +165,10 @@ public class Main {
 				float r = Float.parseFloat(args.get(count++));
 				float g = Float.parseFloat(args.get(count++));
 				float b = Float.parseFloat(args.get(count++));
-				
-				scene.addLight(new DirectionalLight(new Vector3(dx, dy, dz), new Color(r, g, b)));
+				Light light = new DirectionalLight(new Vector3(dx, dy, dz), new Color(r, g, b));
+				light.setTransformation(currentTransform);
+				scene.addLight(light);
+				currentTransform = Transformation.copyTransform(currentTransform);
 			}
 			else if (head.equals("lta")) {
 				float r = Float.parseFloat(args.get(count++));
