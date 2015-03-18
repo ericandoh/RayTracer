@@ -56,20 +56,34 @@ public class BRDF {
 	}
 	
 	//phong shading algorithm goes here
+	//lightDir is not normalized when it is passed in
 	public void addShading(Color src, Vector3 intersectionNormal, Light light, Vector3 lightDir, Vector3 viewRayDirection) {
 		//handle kd
 		//norm(l)*norm(n)
-		float ln = Vector3.normProd(lightDir, intersectionNormal);
+		Vector3 normalizedLightDir = new Vector3();
+		lightDir.normalize(normalizedLightDir);
+		float dist = lightDir.magnitude();
+		float ln = Vector3.normProd(normalizedLightDir, intersectionNormal);
 		ln = Math.max(0.0f, ln);
-		src.addProductScale(kd, light.color, ln);
+		if(light instanceof PointLight) {
+			src.addProductScale(kd, light.color, ln * Math.min(1, (float)Math.pow((1.0 / dist), ((PointLight)light).falloff)));
+		}
+		else {
+			src.addProductScale(kd, light.color, ln);
+		}
 		//handle ks
 		intersectionNormal.scale(rm, 
-				Vector3.normProd(lightDir, intersectionNormal) * 2.0f);
+				Vector3.normProd(normalizedLightDir, intersectionNormal) * 2.0f);
 		rm.subtract(rm, lightDir);
 		float rv = -1.0f * Vector3.normProd(rm, viewRayDirection); //viewRay points from pt to eye, not from eye to pt
 		rv = Math.max(0.0f, rv);
 		rv = (float)Math.pow(rv, ksp);
-		src.addProductScale(ks, light.color, rv);
+		if(light instanceof PointLight) {
+			src.addProductScale(ks, light.color, rv * Math.min(1, (float)Math.pow((1.0 / dist), ((PointLight)light).falloff)));
+		}
+		else {
+			src.addProductScale(ks, light.color, rv);
+		}
 	}
 	public void set(BRDF other) {
 		this.ka.set(other.ka);

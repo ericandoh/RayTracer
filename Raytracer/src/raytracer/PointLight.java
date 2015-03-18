@@ -9,10 +9,18 @@ import math.Vector3;
 public class PointLight extends Light {
 	
 	protected Point pos;
+	public int falloff;
+	
+	public PointLight(Point pos, Color color, int falloff) {
+		super(color);
+		this.pos = pos;
+		this.falloff = falloff;
+	}
 	
 	public PointLight(Point pos, Color color) {
 		super(color);
 		this.pos = pos;
+		this.falloff = 0;
 	}
 	
 	@Override

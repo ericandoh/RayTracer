@@ -170,15 +170,16 @@ public class Main {
 				float r = Float.parseFloat(args.get(count++));
 				float g = Float.parseFloat(args.get(count++));
 				float b = Float.parseFloat(args.get(count++));
+				Light light = new PointLight(new Point(px, py, pz), new Color(r, g, b));
 				
 				if (args.get(count).equals("0") 
 						|| args.get(count).equals("1") 
 						|| args.get(count).equals("2")) {
 					//we have a falloff specified
-					float falloff = Float.parseFloat(args.get(count++));
+					int falloff = Integer.parseInt(args.get(count++));
+					((PointLight)light).falloff = falloff;
 				}
-				System.out.println("Add support for falloff");
-				Light light = new PointLight(new Point(px, py, pz), new Color(r, g, b));
+				//System.out.println("Add support for falloff");
 				light.setTransformation(currentTransform);
 				scene.addLight(light);
 				currentTransform = Transformation.copyTransform(currentTransform);

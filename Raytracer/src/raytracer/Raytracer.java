@@ -34,7 +34,7 @@ public class Raytracer {
 		}
 		Color c = new Color();
 		Ray lightRay = new Ray();
-		Vector3 normalizedLightDirection = new Vector3();
+		//Vector3 normalizedLightDirection = new Vector3();
 		Intersection isBlocked = new Intersection();
 		for (Light light: world.getLights()) {
 			
@@ -45,14 +45,14 @@ public class Raytracer {
 			
 			//make light ray
 			light.generateLightRay(lightRay, c, inter.intersection);
-			lightRay.direction.normalize(normalizedLightDirection);
+		//	lightRay.direction.normalize(normalizedLightDirection);
 			//see if light is blocked from light=>this point
 			world.getIntersectingObject(isBlocked, lightRay, hit);
 			if (!isBlocked.intersects) {
 				//not blocked, so do shading calculations for this light ray
 				//src, intersection (for normal), light (for color), 
 				//normalizedLightDir = dir, ray.direction = view ray direction
-				hit.addShading(src, inter.normal, light, normalizedLightDirection, ray.direction);
+				hit.addShading(src, inter.normal, light, lightRay.direction, ray.direction);
 			}
 		}
 		if(hit.brdf.kr.dot(hit.brdf.kr) > 0) {
