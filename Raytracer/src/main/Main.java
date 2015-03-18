@@ -9,12 +9,14 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -301,7 +303,16 @@ public class Main {
 		
 		scene.fillImage(canvas);
 		
-		//save iamge here
+		//save image here
+		if (outputFileName.endsWith(".png")) {
+			outputFileName = outputFileName + ".png";
+		}
+		try {
+			File outputImg = new File(outputFileName);
+			ImageIO.write(canvas, "png", outputImg);
+		} catch(IOException e) {
+			System.err.printf("Couldn't write to file "+outputFileName+": "+e.getMessage());
+		}
 	}
 	
 	public static void repaint(int x, int y, Color c) {

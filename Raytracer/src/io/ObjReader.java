@@ -33,7 +33,7 @@ public class ObjReader {
 		String line;
 		while ((line = reader.readLine()) != null) {
 			line = line.replaceAll("\t", " ");
-			String[] args = line.split(" ");
+			String[] args = line.trim().replaceAll(" +"," ").split(" ");
 			for (String arg : args) {
 				contents.add(arg);
 			}
@@ -84,7 +84,7 @@ public class ObjReader {
 			HashMap<String, BRDF> matLst,
 			ArrayList<WorldObject> wobjs) throws MalformedObjFileException {
 		line = line.replaceAll("\t", " ");
-		String[] parts = line.split(" ");
+		String[] parts = line.trim().replaceAll(" +"," ").split(" ");
 		if (parts.length == 0) {
 			return;
 		}
@@ -215,7 +215,7 @@ public class ObjReader {
 	
 	public static String processMatLine(String line, HashMap<String, BRDF> matLst, String last) throws MalformedObjFileException {
 		line = line.replaceAll("\t", " ");
-		String[] parts = line.split(" ");
+		String[] parts = line.trim().replaceAll(" +"," ").split(" ");
 		if (parts.length == 0) {
 			return last;
 		}
