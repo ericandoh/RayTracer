@@ -40,6 +40,6 @@ public class Plane {
 		return pt;
 	}
 	public String toString() {
-		return ""+this.ul+this.ll+this.ur + this.lr;
+		return ""+this.ll + this.lr+this.ul+this.ur;
 	}
 }

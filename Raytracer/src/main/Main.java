@@ -304,7 +304,7 @@ public class Main {
 		scene.fillImage(canvas);
 		
 		//save image here
-		if (outputFileName.endsWith(".png")) {
+		if (!outputFileName.endsWith(".png")) {
 			outputFileName = outputFileName + ".png";
 		}
 		try {

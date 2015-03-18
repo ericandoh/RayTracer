@@ -101,13 +101,13 @@ public class ObjReader {
 			return;
 		}
 		else if (starter.equals("o")) {
-			MeshShape shape;
+			/*MeshShape shape;
 			if (parts.length < 2)
 				shape = new MeshShape();
 			else
 				shape = new MeshShape(parts[1]);
 			meshes.add(0, shape);
-			wobjs.add(0, new WorldObject(shape, null));
+			wobjs.add(0, new WorldObject(shape, null));*/
 		}
 		else if (starter.equals("v")) {
 			if (parts.length < 4)
@@ -120,19 +120,16 @@ public class ObjReader {
 			BRDF bird = matLst.get(parts[1]);
 			if (bird == null) {
 				System.out.println("No material named " + parts[1]);
-				wobjs.get(0).brdf = BRDF.RED_DIFFUSE;
+				MeshShape shape;
+				shape = new MeshShape(parts[1]);
+				meshes.add(0, shape);
+				wobjs.add(0, new WorldObject(shape, BRDF.RED_DIFFUSE));
 			}
 			else {
-				
-				if (wobjs.get(0).brdf == null) {
-					wobjs.get(0).brdf = matLst.get(parts[1]);
-				}
-				else {
-					MeshShape shape;
-					shape = new MeshShape(wobjs.get(0).toString() + "+");
-					meshes.add(0, shape);
-					wobjs.add(0, new WorldObject(shape, matLst.get(parts[1])));
-				}
+				MeshShape shape;
+				shape = new MeshShape(parts[1]);
+				meshes.add(0, shape);
+				wobjs.add(0, new WorldObject(shape, matLst.get(parts[1])));
 			}
 		}
 		else if (starter.equals("f")) {

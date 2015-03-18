@@ -12,7 +12,7 @@ public class Camera {
 	private Plane imagePlane;
 	
 	public Camera() {
-		cameraCenter = new Point(-3.5f, 7.0f, 3.5f);
+		cameraCenter = new Point(-4f, 5.0f, 3f);
 		//cameraCenter = new Point(-3.5f, 2.0f, 3.5f);
 		imagePlane = new Plane();
 		
@@ -105,5 +105,9 @@ public class Camera {
 		System.out.println(ray.direction.x);
 		System.out.println(ray.direction.y);
 		System.out.println(ray.direction.z);
+		
+		System.out.println("Finding image plane");
+		test = new Camera();
+		System.out.println(test.imagePlane);
 	}
 }
