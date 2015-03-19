@@ -1,5 +1,7 @@
 package math;
 
+import java.awt.image.BufferedImage;
+
 import raytracer.Light;
 import raytracer.PointLight;
 
@@ -21,6 +23,11 @@ public class BRDF {
 	public float ksp;
 	
 	public Color kr;
+	
+	public BufferedImage texture;
+	public boolean useTexture = false;
+	
+	private Color tempKDForTexture = new Color();
 	
 	private Vector3 rm = new Vector3();
 	
@@ -57,23 +64,35 @@ public class BRDF {
 	
 	//phong shading algorithm goes here
 	//lightDir is not normalized when it is passed in
-	public void addShading(Color src, Vector3 intersectionNormal, Light light, Vector3 lightDir, Vector3 viewRayDirection) {
+	public void addShading(Color src, Intersection intersection, Light light, Vector3 lightDir, Vector3 viewRayDirection) {
 		//handle kd
 		//norm(l)*norm(n)
 		Vector3 normalizedLightDir = new Vector3();
 		lightDir.normalize(normalizedLightDir);
 		float dist = lightDir.magnitude() + 1.0f;
-		float ln = Vector3.normProd(normalizedLightDir, intersectionNormal);
+		float ln = Vector3.normProd(normalizedLightDir, intersection.normal);
 		ln = Math.max(0.0f, ln);
+		
+		
+		Color localKD = kd;
+		
+		if (intersection.useUV && this.useTexture) {
+			int rgb = this.texture.getRGB((int)(intersection.u*this.texture.getWidth()), (int)(intersection.v*this.texture.getHeight()));
+			tempKDForTexture.r = ((rgb >> 16) & 0xFF) / 255.0f;
+			tempKDForTexture.g = ((rgb >> 8) & 0xFF) / 255.0f;
+			tempKDForTexture.b = (rgb & 0xFF) / 255.0f;
+			localKD = tempKDForTexture;
+		}
+		
 		if(light instanceof PointLight) {
-			src.addProductScale(kd, light.color, ln * (float)Math.pow((1.0 / dist), ((PointLight)light).falloff));
+			src.addProductScale(localKD, light.color, ln * (float)Math.pow((1.0 / dist), ((PointLight)light).falloff));
 		}
 		else {
-			src.addProductScale(kd, light.color, ln);
+			src.addProductScale(localKD, light.color, ln);
 		}
 		//handle ks
-		intersectionNormal.scale(rm, 
-				Vector3.normProd(normalizedLightDir, intersectionNormal) * 2.0f);
+		intersection.normal.scale(rm, 
+				Vector3.normProd(normalizedLightDir, intersection.normal) * 2.0f);
 		rm.subtract(rm, lightDir);
 		float rv = -1.0f * Vector3.normProd(rm, viewRayDirection); //viewRay points from pt to eye, not from eye to pt
 		rv = Math.max(0.0f, rv);
@@ -113,30 +132,30 @@ public class BRDF {
 		//----------AMBIENT TEST----------------
 		BRDF model = new BRDF(red, Color.BLACK, Color.BLACK, 1.0f, Color.BLACK);
 		result.setBlack();
-		model.addShading(result, inter.normal, light, lightRay, viewRay.direction);
+		model.addShading(result, inter, light, lightRay, viewRay.direction);
 		System.out.println("Pure Ambient: " + result);
 		//----------DIFFUSE TEST----------------
 		//red light straight up
 		model = new BRDF(Color.BLACK, red, Color.BLACK, 1.0f, Color.BLACK);
 		result.setBlack();
-		model.addShading(result, inter.normal, light, lightRay, viewRay.direction);
+		model.addShading(result, inter, light, lightRay, viewRay.direction);
 		System.out.println("Diffuse, Straight: " + result);
 		//red light shined at an angle
 		lightRay = new Vector3(1.0f, 1.0f, 0.0f);
 		result.setBlack();
-		model.addShading(result, inter.normal, light, lightRay, viewRay.direction);
+		model.addShading(result, inter, light, lightRay, viewRay.direction);
 		System.out.println("Diffuse, Tilted Light: " + result);
 		//red light shined at a sharper angle
 		lightRay = new Vector3(8.0f, 1.0f, 0.0f);
 		result.setBlack();
-		model.addShading(result, inter.normal, light, lightRay, viewRay.direction);
+		model.addShading(result, inter, light, lightRay, viewRay.direction);
 		System.out.println("Diffuse, Tilted Light Extreme: " + result);
 		//colored light on colored object
 		light = new PointLight(new Point(1.0f, 1.0f, 1.0f), new Color(0.5f, 0.4f, 0.3f));
 		lightRay = new Vector3(1.0f, 1.0f, 0.0f);
 		model = new BRDF(new Color(0.5f, 0.6f, 0.7f), Color.BLACK, Color.BLACK, 1.0f, Color.BLACK);
 		result.setBlack();
-		model.addShading(result, inter.normal, light, lightRay, viewRay.direction);
+		model.addShading(result, inter, light, lightRay, viewRay.direction);
 		System.out.println("Diffuse, Tilted Colored on Colored: " + result);
 		
 	}

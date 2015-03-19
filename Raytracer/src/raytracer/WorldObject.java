@@ -51,7 +51,7 @@ public class WorldObject {
 	public void addAmbient(Color src, Light light) {
 		brdf.addAmbient(src, light);
 	}
-	public void addShading(Color src, Vector3 intersectionNormal, Light light, Vector3 lightDir, Vector3 viewRayDirection) {
-		brdf.addShading(src, intersectionNormal, light, lightDir, viewRayDirection);
+	public void addShading(Color src, Intersection intersection, Light light, Vector3 lightDir, Vector3 viewRayDirection) {
+		brdf.addShading(src, intersection, light, lightDir, viewRayDirection);
 	}
 }

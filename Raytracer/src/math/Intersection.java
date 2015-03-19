@@ -12,6 +12,9 @@ public class Intersection {
 	
 	public boolean intersects;
 	
+	public boolean useUV = false;
+	public float u, v;
+	
 	public Intersection() {
 		this.intersection = new Point();
 		this.t = 0;
@@ -42,6 +45,10 @@ public class Intersection {
 		this.t = i.t;
 		this.normal.set(i.normal);
 		this.intersects = i.intersects;
+		
+		this.useUV = i.useUV;
+		this.u = i.u;
+		this.v = i.v;
 	}
 	public float getT() {
 		return t;

@@ -52,7 +52,7 @@ public class Raytracer {
 				//not blocked, so do shading calculations for this light ray
 				//src, intersection (for normal), light (for color), 
 				//normalizedLightDir = dir, ray.direction = view ray direction
-				hit.addShading(src, inter.normal, light, lightRay.direction, ray.direction);
+				hit.addShading(src, inter, light, lightRay.direction, ray.direction);
 			}
 		}
 		if(hit.brdf.kr.dot(hit.brdf.kr) > 0) {

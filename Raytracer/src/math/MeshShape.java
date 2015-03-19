@@ -23,6 +23,7 @@ public class MeshShape extends Shape {
 	
 	public void addTriangle(Triangle t) {
 		triangles.add(t);
+		t.owner = this;
 		box.update(t);
 	}
 	public String toString() {

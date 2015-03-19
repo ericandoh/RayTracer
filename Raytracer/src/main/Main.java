@@ -42,7 +42,7 @@ public class Main {
 	
 	//whether to interpolate vertex normals (if specified)
 	//if false, use Goraud shading
-	public static boolean simpleShading = false;
+	public static boolean simpleShading = true;
 	
 	//change this to false for submission
 	public static boolean showOutput = true;
@@ -52,9 +52,6 @@ public class Main {
 	public static int height = 600;
 	
 	public static void parseArguments(ArrayList<String> args) {
-		
-		System.out.println("We need falloofffff!!!!!! OH SHIT");
-		System.out.println("Make so we don't show a visual window when submitting");
 		
 		int count = 0;
 		String head;
@@ -82,6 +79,9 @@ public class Main {
 			}
 			else if (head.equals("vis")) {
 				showOutput = true;
+			}
+			else if (head.equals("smooth")) {
+				simpleShading=false;
 			}
 			else if (head.equals("obj")) {
 				ArrayList<WorldObject> objects = ObjReader.readObj(args.get(count++));

@@ -1,5 +1,6 @@
 package io;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
 
 import raytracer.WorldObject;
 import math.BRDF;
@@ -42,6 +45,17 @@ public class ObjReader {
 		reader.close();
 		
 		return contents;
+	}
+	
+	
+	public static BufferedImage readImageFile(String fileName) {
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File(fileName));
+		} catch (IOException e) {
+			System.err.printf("No resource file named "+fileName+": "+e.getMessage());
+		}
+		return img;
 	}
 	
 	public static ArrayList<WorldObject> readObj(String fileName) {
@@ -293,6 +307,15 @@ public class ObjReader {
 			matLst.get(last).ks.r = Float.parseFloat(parts[1]);
 			matLst.get(last).ks.g = Float.parseFloat(parts[2]);
 			matLst.get(last).ks.b = Float.parseFloat(parts[3]);
+		}
+		else if (starter.equals("map_Kd")) {
+			if (parts.length < 2)
+				throw new MalformedObjFileException("Need resource name");
+			BufferedImage texture = readImageFile(parts[1]);
+			if (texture != null) {
+				matLst.get(last).texture = texture;
+				matLst.get(last).useTexture = true;
+			}
 		}
 		else {
 			//not supported:

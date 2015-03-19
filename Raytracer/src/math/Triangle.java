@@ -12,10 +12,15 @@ public class Triangle extends Shape {
 	public Vector3 p1p0, p2p0;
 	
 	//temp
-	public Vector3 ppp0 = new Vector3();
+	private Vector3 ppp0 = new Vector3();
+	private Vector3 uvtemp = new Vector3();
 	
 	public boolean singleNormal;
+	public boolean hasTexture;
 	public Vector3 normal0, normal1, normal2;
+	public Vector3 uv0, uv1, uv2;
+	
+	public MeshShape owner;
 	
 	public Triangle(Point p0, Point p1, Point p2) {
 		//three points define a triangle
@@ -33,6 +38,8 @@ public class Triangle extends Shape {
 		p1p0.crossProd(this.normal, p2p0);
 		this.normal.normalize(this.normal);
 		this.singleNormal = true;
+		
+		hasTexture = false;
 	}
 	public Triangle(Point p0, Point p1, Point p2, Vector3 vn0, Vector3 vn1, Vector3 vn2) {
 		this.p0 = new Point();
@@ -64,9 +71,18 @@ public class Triangle extends Shape {
 		this.normal0.normalize(this.normal0);
 		this.normal1.normalize(this.normal1);
 		this.normal2.normalize(this.normal2);
+		
+		hasTexture = false;
 	}
 	public void addTextureCoordinates(Vector3 vt0, Vector3 vt1, Vector3 vt2) {
 		//handle texture coordinates
+		uv0 = new Vector3();
+		uv1 = new Vector3();
+		uv2 = new Vector3();
+		this.uv0.set(vt0);
+		this.uv1.set(vt1);
+		this.uv2.set(vt2);
+		hasTexture = true;
 	}
 	
 	@Override
@@ -134,6 +150,30 @@ public class Triangle extends Shape {
 				
 			}
 			src.t = t;
+			
+			if (hasTexture) {
+				src.useUV = true;
+				src.intersection.subtract(ppp0, p0);
+				float d00 = Vector3.dot(p1p0, p1p0);
+				float d01 = Vector3.dot(p1p0, p2p0);
+				float d11 = Vector3.dot(p2p0, p2p0);
+				float d20 = Vector3.dot(ppp0, p1p0);
+				float d21 = Vector3.dot(ppp0, p2p0);
+				float denom = d00 * d11 - d01 * d01;
+				
+				float l2 = (d11*d20 - d01*d21) / denom;
+				float l3 = (d00*d21 - d01*d20)/ denom;
+				float l1 = 1 - l2 - l3;
+				
+				uvtemp.set(0, 0, 0);
+				uvtemp.addScaled(uv0, l1);
+				uvtemp.addScaled(uv1, l2);
+				uvtemp.addScaled(uv2, l3);
+				src.u = uvtemp.x;
+				src.v = uvtemp.y;
+				//w?
+			}
+			
 			return src;
 		}
 	}
