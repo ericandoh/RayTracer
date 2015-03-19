@@ -48,8 +48,8 @@ public class Main {
 	public static boolean showOutput = true;
 	public static String outputFileName = "result.png";
 	
-	public static int width = 600;
-	public static int height = 600;
+	public static int width = 1000;
+	public static int height = 1000;
 	
 	public static void parseArguments(ArrayList<String> args) {
 		
