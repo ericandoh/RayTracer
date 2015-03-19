@@ -132,6 +132,12 @@ public class Main {
 				scene.cam.setTransformation(currentTransform);
 				currentTransform = Transformation.copyTransform(currentTransform);
 			}
+			else if (head.equals("lookAt")) {
+				float x = Float.parseFloat(args.get(count++));
+				float y = Float.parseFloat(args.get(count++));
+				float z = Float.parseFloat(args.get(count++));
+				scene.cam.lookAt(new Point(x, y, z));
+			}
 			else if (head.equals("sph")) {
 				float cx = Float.parseFloat(args.get(count++));
 				float cy = Float.parseFloat(args.get(count++));

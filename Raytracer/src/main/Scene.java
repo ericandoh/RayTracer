@@ -3,8 +3,6 @@ package main;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-
 import raytracer.Camera;
 import raytracer.Light;
 import raytracer.Raytracer;
@@ -15,7 +13,6 @@ import math.Ray;
 import math.Shape;
 import math.Color;
 import math.Transformation;
-import math.Vector3;
 
 public class Scene {
 	
