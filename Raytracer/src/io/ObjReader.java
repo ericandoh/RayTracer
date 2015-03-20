@@ -308,6 +308,13 @@ public class ObjReader {
 			matLst.get(last).ks.g = Float.parseFloat(parts[2]);
 			matLst.get(last).ks.b = Float.parseFloat(parts[3]);
 		}
+		else if (starter.equals("Kr")) {
+			if (parts.length < 4)
+				throw new MalformedObjFileException("Ns invalid");
+			matLst.get(last).kr.r = Float.parseFloat(parts[1]);
+			matLst.get(last).kr.g = Float.parseFloat(parts[2]);
+			matLst.get(last).kr.b = Float.parseFloat(parts[3]);
+		}
 		else if (starter.equals("map_Kd")) {
 			if (parts.length < 2)
 				throw new MalformedObjFileException("Need resource name");
