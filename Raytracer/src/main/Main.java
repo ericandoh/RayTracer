@@ -33,6 +33,8 @@ import math.Transformation;
 import math.Triangle;
 import math.Vector3;
 
+//main class
+
 public class Main {
 	
 	public static DrawPanel panel;
